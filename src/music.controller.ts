@@ -157,7 +157,7 @@ export class MusicController {
 
 	async addMusic(query: string, userId: string) {
 		
-		return new Promise<TrackAdd | undefined>((resolve,reject) => {
+		return new Promise<TrackAdd | undefined>((resolve, reject) => {
 			const add = (title: string, url: string) => {
 				this.queue.add(title, url, userId);
 				this.nextAudioResourceIfIdle();
