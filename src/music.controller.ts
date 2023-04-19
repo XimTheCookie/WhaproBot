@@ -5,7 +5,7 @@ import ytdl from "ytdl-core";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { TrackType } from "./models/enums/TrackType.enum";
 import { QueueController } from "./queue.controller";
-import { getYoutubePlaylistCode, getYoutubeVideoCode } from "./utils/utils";
+import { getResource, getYoutubePlaylistCode, getYoutubeVideoCode } from "./utils/utils";
 
 export class MusicController {
 	
@@ -177,7 +177,7 @@ export class MusicController {
 						else reject("track_error_playlist");
 						return;
 					}
-					if (data?.videos?.length > 1) {
+					if (data?.videos?.length > 0) {
 						data.videos.forEach((v) => {
 							if (v?.videoId)
 								this.queue.add(v?.title, "https://www.youtube.com/watch?v=" + v?.videoId, userId);
@@ -185,7 +185,7 @@ export class MusicController {
 						this.nextAudioResourceIfIdle();
 						resolve({
 							track: {
-								name: data?.title,
+								name: data?.title + getResource("track_add_playlist_n", data?.videos?.length.toString()),
 								url: data?.url,
 								userId: userId
 							},

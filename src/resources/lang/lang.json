@@ -4,6 +4,7 @@
 	"track_add": "✅ Track ``{arg0}`` [{arg1}] added to queue.",
 	"track_add_w": ":mag: ``{arg0}``.",
 	"track_add_playlist": "✅ Playlist ``{arg0}`` [{arg1}] added to queue.",
+	"track_add_playlist_n": "({arg0} Tracks)",
 	"track_skip": "⏭ Track skipped.",
 	"track_current": "🔊 ``{arg0}`` [{arg1}] is playing.",
 	"track_current_short": "🔊 ``{arg0}`` is playing.",
