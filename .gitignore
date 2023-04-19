@@ -20,3 +20,4 @@ yarn-error.log
 # Configuration
 src/configuration.json
 configuration.json
+src/configuration.json

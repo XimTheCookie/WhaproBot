@@ -35,6 +35,7 @@
 
 	"bot_join": "Bot joined channel <#{arg0}>.",
 	"bot_not_voice": "❌ Bot is not connected to any voice channel.",
+	"bot_cannot_join": "❌ Bot is missing permission to join that voice channel.",
 
 	"user_not_voice": "❌ You must be in a voice channel to use that command.",
 	"user_not_same_voice": "❌ You must be in the same voice channel as the bot to use that command.",

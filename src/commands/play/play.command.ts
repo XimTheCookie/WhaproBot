@@ -15,25 +15,31 @@ export const play =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		
-		if(!voice) {
+		if (!voice) {
 			await interaction.reply(getResource("user_not_voice"));
 			return;
 		}
 
+		if (!voice.joinable) {
+			await interaction.reply(getResource("bot_cannot_join"));
+			return;
+		}
+		
+
 		const currentChannelId = controller.getConnection(guild, voice.id)?.joinConfig?.channelId;
 
-		if(currentChannelId !== voice.id) {
+		if (currentChannelId !== voice.id) {
 			await interaction.reply(getResource("user_not_same_voice"));
 			return;
 		}
 
 		const query = interaction.options.getString("query");
 
-		if(query) {
+		if (query) {
 			await interaction.reply(getResource("track_add_w", query));
 			
 			controller.addMusic(query, interaction.user.id).then((result) => {
-				if(result?.type === TrackType.playlist)
+				if (result?.type === TrackType.playlist)
 					interaction.editReply(getResource("track_add_playlist", result?.track?.name, result?.track?.url));
 				else
 					interaction.editReply(getResource("track_add", result?.track?.name, result?.track?.url));
