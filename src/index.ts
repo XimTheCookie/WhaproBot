@@ -31,6 +31,24 @@ client.on("interactionCreate", (interaction) => {
 	commands.find((c) => c.data.name === commandName)?.execute(interaction, controller, guild, voice);
 });
 
+client.on("voiceStateUpdate", (oldState, newState) => {
+	if (!oldState?.channel && newState?.channel) return;
+	
+	
+
+	if (oldState?.member?.id === Configuration.getClientId() && !newState?.channel) {
+		const guild = oldState.guild;
+		whapro.getController(guild.id).deleteConnection();
+		return;
+	}
+
+	if (newState?.member?.id !== Configuration.getClientId()) return;
+	if (oldState?.channel?.id !== newState?.channel?.id && newState?.channel?.id) {
+		const guild = newState.guild;
+		whapro.getController(guild.id).newConnection(guild, newState?.channel?.id)
+	}
+	
+});
 
 client.login(Configuration.getToken());
 

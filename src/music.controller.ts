@@ -119,16 +119,16 @@ export class MusicController {
 		// Subscribe a player to this connection
 		connection.subscribe(this.getPlayer());
 
-		connection.on("stateChange", (oldState, newState) => {
-			if (
-				(
-					newState.status === VoiceConnectionStatus.Destroyed 
-					|| 
-					newState.status === VoiceConnectionStatus.Disconnected
-				) && this.getConnection()
-			) 
-				this.deleteConnection();
-		});
+		// connection.on("stateChange", (oldState, newState) => {
+		// 	if (
+		// 		(
+		// 			newState.status === VoiceConnectionStatus.Destroyed 
+		// 			|| 
+		// 			newState.status === VoiceConnectionStatus.Disconnected
+		// 		) && this.getConnection()
+		// 	) 
+		// 		this.deleteConnection();
+		// });
 
 		
 

@@ -8,6 +8,7 @@ export const join =
 		.setName("join")
 		.setDescription("Join your voice channel!"),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
+		// TODO aggiornare i testi
 		if (!voice) {
 			await interaction.reply(getResource("voiceRequired"));
 			return;
