@@ -5,6 +5,7 @@ import ytdl from "ytdl-core";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { TrackType } from "./models/enums/TrackType.enum";
 import { QueueController } from "./queue.controller";
+import { getYoutubePlaylistCode, getYoutubeVideoCode } from "./utils/utils";
 
 export class MusicController {
 	
@@ -211,29 +212,20 @@ export class MusicController {
 					add(title, url);
 				});
 			};
+			
 			if (query.includes("www.youtube.com/")) {
-				const isPlaylist: boolean = query.includes("&list=");
-				const hasVideo: boolean = query.includes("watch?v=");
+				const videoCode: string = getYoutubeVideoCode(query);
+				const playlistCode: string = getYoutubePlaylistCode(query);
 				let code: string = "";
-				if (hasVideo) code = query.slice(query.indexOf("?v=") + 3, query.includes("&list") ? query.indexOf("&list") : query.length);
-				// https://www.youtube.com/watch?v=8IK6eLTNV1k&list=PL4Z0drBP1ACZaPOPxDwi8x8gBwlZHb0_E&index=1
-				// https.get(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${code}`, (response) => {
-				// 	response.on("data", (data) => {
-				// 		const result = JSON.parse(data.toString());
-				// 		if(result?.title) 
-				// 			add(result?.title, `https://www.youtube.com/watch?v=${code}`);
-				// 		else reject();
-				// 		response.removeAllListeners("data");
-				// 	});
-				// });
-
-				if (isPlaylist) {
-					const pCode = query.slice(query.indexOf("&list=") + 6, query.includes("&index") ? query.indexOf("&index") : query.length);
-					fromPlaylist(pCode, code);
+				if (playlistCode) {
+					fromPlaylist(playlistCode, videoCode)
+					return;
 				}
-				else if (hasVideo) fromCode(code);
-				else reject();
-				
+				if (code) {
+					fromCode(code);
+					return;
+				}
+				reject();
 			} else {
 				search();
 			}

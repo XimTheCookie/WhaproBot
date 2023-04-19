@@ -36,3 +36,21 @@ export function getResource(id: string, arg0?: string, arg1?: string, arg2?: str
 	}
 	return id;
 }
+
+export function getYoutubeVideoCode(url: string) {
+	const videoPrefix: string = "watch?v=";
+	const playlistPrefix: string = "&list";
+	if (!url.includes(videoPrefix)) return "";
+	return url.slice(url.indexOf(videoPrefix) + videoPrefix.length, url.indexOf(playlistPrefix) ?? url.length);
+}
+
+export function getYoutubePlaylistCode(url: string) {
+	const videoPlaylistPrefix: string = "&list=";
+	const videoPlaylistSuffix: string = "&index";
+	const videoPlaylistSuffixPublic: string = "&start";
+	const playlistPrefix: string = "playlist?list=";
+	if (!url.includes(videoPlaylistPrefix) && !url.includes(playlistPrefix)) return "";
+	if (url.includes(videoPlaylistPrefix)) 
+		return url.slice(url.indexOf(videoPlaylistPrefix) + videoPlaylistPrefix.length, url.includes(videoPlaylistSuffix) ? url.indexOf(videoPlaylistSuffix) : url.includes(videoPlaylistSuffixPublic) ? url.indexOf(videoPlaylistSuffixPublic) : url.length);
+	return url.slice(url.indexOf(playlistPrefix) + playlistPrefix.length, url.length);
+}

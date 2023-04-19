@@ -32,7 +32,7 @@ export const queue =
 		
 		if (queue.length > 0) {
 			print = print + `${getResource("queue_list")}\n`;
-			print = print + "``\n";
+			print = print + "```json\n";
 			
 			const pages: number = Math.floor(queue?.length / itemsPerPage);
 			const maxPages: number = Math.ceil(queue?.length / itemsPerPage);
@@ -49,7 +49,7 @@ export const queue =
 				print = print + `${getResource("queue_list_item", (i + startIndex + 1).toString(), t?.name)}\n`;
 			});
 			print = print + `\n${getResource("queue_page", requiredPage.toString(), maxPages.toString())}`;
-			print = print + "\n``";
+			print = print + "\n```";
 		} else print = print + `${getResource("queue_none")}`;
 		
 		if (controller.loopStatus()) {
