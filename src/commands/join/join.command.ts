@@ -8,16 +8,20 @@ export const join =
 		.setName("join")
 		.setDescription("Join your voice channel!"),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
-		// TODO aggiornare i testi
 		if (!voice) {
-			await interaction.reply(getResource("voiceRequired"));
+			await interaction.reply(getResource("user_not_voice"));
 			return;
 		}
 		if (controller.getConnection()?.joinConfig?.channelId === voice?.id) {
-			await interaction.reply(getResource("botAlreadyInChannel"));
+			await interaction.reply(getResource("user_same_voice"));
 			return;
 		}
+		if (!voice?.joinable) {
+			await interaction.reply(getResource("bot_cannot_join"));
+			return;
+		}
+		
 		controller.newConnection(guild, voice.id);
-		await interaction.reply(getResource("botJoined", voice.id));
+		await interaction.reply(getResource("bot_join", voice.id));
 	}
 }

@@ -1,3 +1,5 @@
+import { clear } from "./clear/clear.command";
+import { help } from "./help/help.command";
 import { info } from "./info/info.command";
 import { join } from "./join/join.command";
 import { loop } from "./loop/loop.command.js";
@@ -25,5 +27,7 @@ export const commands = [
 	remove,
 	queue,
 	move,
-	info
+	info,
+	clear,
+	help
 ];

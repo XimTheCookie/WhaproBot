@@ -38,10 +38,14 @@ export function getResource(id: string, arg0?: string, arg1?: string, arg2?: str
 }
 
 export function getYoutubeVideoCode(url: string) {
-	const videoPrefix: string = "watch?v=";
-	const playlistPrefix: string = "&list";
-	if (!url.includes(videoPrefix)) return "";
-	return url.slice(url.indexOf(videoPrefix) + videoPrefix.length, url.includes(playlistPrefix) ? url.indexOf(playlistPrefix) : url.length);
+	let videoPrefix: string = "watch?v=";
+	let possibleSuffix: string = "&list";
+	if (!url.includes(videoPrefix)) {
+		videoPrefix = "youtu.be/";
+		possibleSuffix = "?";
+		if (!url.includes(videoPrefix)) return "";
+	}
+	return url.slice(url.indexOf(videoPrefix) + videoPrefix.length, url.includes(possibleSuffix) ? url.indexOf(possibleSuffix) : url.length);
 }
 
 export function getYoutubePlaylistCode(url: string) {

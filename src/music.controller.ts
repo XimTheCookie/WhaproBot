@@ -174,7 +174,7 @@ export class MusicController {
 				yts({listId: pCode}, (error, data) => {
 					if (error) {
 						if (code) fromCode(code);
-						else reject();
+						else reject("track_error_playlist");
 						return;
 					}
 					if (data?.videos?.length > 1) {
@@ -201,32 +201,30 @@ export class MusicController {
 						const title = data?.videos[0]?.title
 						const url = data?.videos[0]?.url;
 						add(title, url);
-					}
+					} else reject("track_error_no_results");
 				});
 			};
 			const fromCode = (code: string) => {
 				yts({videoId: code}, (error, data) => {
-					if (error) reject();
+					if (error) reject("track_error");
 					const title = data?.title
 					const url = data?.url;
 					add(title, url);
 				});
 			};
 			
-			if (query.includes("www.youtube.com/")) {
+			if (query.includes("youtube.com/") || query.includes("youtu.be/")) {
 				const videoCode: string = getYoutubeVideoCode(query);
 				const playlistCode: string = getYoutubePlaylistCode(query);
 				if (playlistCode) {
-					console.log("fromplayliost", playlistCode, videoCode);
 					fromPlaylist(playlistCode, videoCode)
 					return;
 				}
 				if (videoCode) {
-					console.log("fromcode", videoCode);
 					fromCode(videoCode);
 					return;
 				}
-				reject();
+				reject("track_error_no_track");
 			} else {
 				search();
 			}

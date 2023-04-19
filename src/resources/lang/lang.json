@@ -11,6 +11,9 @@
 	"track_user": "👤 Requested by: <@{arg0}>",
 	"track_no_query": "❌ No query specified.",
 	"track_error": "❌ Error occurred adding track to queue.",
+	"track_error_playlist": "❌ Error occurred adding playlist to queue.",
+	"track_error_no_results": "❌ Nothing found.",
+	"track_error_no_track": "❌ No track/playlist found in provided url.",
 
 	"queue_title": "Queue for server ``{arg0}``:",
 	"queue_list": "Following tracks:",
@@ -27,12 +30,14 @@
 	"queue_move_invalid": "❌ Not enough indexes were provided.",
 	"queue_move_itself": "✅ Successfully replaced track with itself.",
 	"queue_move": "✅ Successfully switched places between ``{arg0}`` :left_right_arrow: ``{arg1}``.",
+	"queue_clear": "✅ Successfully cleared queue from {arg0} tracks.",
 
 	"player_pause": "⏸ Player is now paused.",
 	"player_resume": "▶ Resume.",
 	"player_not_paused": "❌ Player is not paused.",
 	"player_already_paused": "❌ Player is already paused.",
 
+	"bot_leave": "Bot disconnected.",
 	"bot_join": "Bot joined channel <#{arg0}>.",
 	"bot_not_voice": "❌ Bot is not connected to any voice channel.",
 	"bot_cannot_join": "❌ Bot is missing permission to join that voice channel.",
@@ -40,4 +45,10 @@
 	"user_not_voice": "❌ You must be in a voice channel to use that command.",
 	"user_not_same_voice": "❌ You must be in the same voice channel as the bot to use that command.",
 	"user_same_voice": "❌ You must be in the different voice channel to use that command.",
+
+	"command_help": "/help - Displays this list of commands.",
+	"command_play": "/play [query] - Add track to queue.",
+	"command_join": "/join - Move bot to your channel.",
+	"command_queue": "/queue (page) - Displays server queue.",
+	"command_skip": "/skip - Skips the current track."
 }

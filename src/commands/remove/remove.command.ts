@@ -9,7 +9,7 @@ export const remove =
 		.setDescription("Remove a track from queue.")
 		.addIntegerOption(option => 
 			option.setName("index")
-				.setDescription("Index of the song to remove.")
+				.setDescription("Index of the track to remove.")
 				.setRequired(true) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {

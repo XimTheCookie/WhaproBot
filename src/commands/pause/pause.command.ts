@@ -7,7 +7,7 @@ export const pause =
 {
 	data: new SlashCommandBuilder()
 		.setName("pause")
-		.setDescription("Pause the player!"),
+		.setDescription("Pauses the player."),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			await interaction.reply(getResource("bot_not_voice"));

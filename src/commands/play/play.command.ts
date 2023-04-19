@@ -44,7 +44,7 @@ export const play =
 				else
 					interaction.editReply(getResource("track_add", result?.track?.name, result?.track?.url));
 			}).catch((e) => {
-				interaction.editReply(getResource("track_error"));
+				interaction.editReply(getResource(e));
 			})
 			return;
 		}

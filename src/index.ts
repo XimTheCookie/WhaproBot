@@ -48,7 +48,7 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 		whapro.getController(guild.id).newConnection(guild, newState?.channel?.id)
 	}
 	
+	
 });
 
 client.login(Configuration.getToken());
-

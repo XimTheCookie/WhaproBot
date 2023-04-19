@@ -50,7 +50,7 @@ export const queue =
 			});
 			print = print + `\n${getResource("queue_page", requiredPage.toString(), maxPages.toString())}`;
 			print = print + "\n```";
-		} else print = print + `${getResource("queue_none")}`;
+		} else print = print + `${getResource("queue_none")}\n`;
 		
 		if (controller.loopStatus()) {
 			print = print + `\n${getResource("queue_loop_on")}`;
