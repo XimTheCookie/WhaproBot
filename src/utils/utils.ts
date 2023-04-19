@@ -41,7 +41,7 @@ export function getYoutubeVideoCode(url: string) {
 	const videoPrefix: string = "watch?v=";
 	const playlistPrefix: string = "&list";
 	if (!url.includes(videoPrefix)) return "";
-	return url.slice(url.indexOf(videoPrefix) + videoPrefix.length, url.indexOf(playlistPrefix) ?? url.length);
+	return url.slice(url.indexOf(videoPrefix) + videoPrefix.length, url.includes(playlistPrefix) ? url.indexOf(playlistPrefix) : url.length);
 }
 
 export function getYoutubePlaylistCode(url: string) {
@@ -49,7 +49,7 @@ export function getYoutubePlaylistCode(url: string) {
 	const videoPlaylistSuffix: string = "&index";
 	const videoPlaylistSuffixPublic: string = "&start";
 	const playlistPrefix: string = "playlist?list=";
-	if (!url.includes(videoPlaylistPrefix) && !url.includes(playlistPrefix)) return "";
+	if (url.includes(videoPlaylistSuffixPublic) || !url.includes(videoPlaylistPrefix) && !url.includes(playlistPrefix)) return "";
 	if (url.includes(videoPlaylistPrefix)) 
 		return url.slice(url.indexOf(videoPlaylistPrefix) + videoPlaylistPrefix.length, url.includes(videoPlaylistSuffix) ? url.indexOf(videoPlaylistSuffix) : url.includes(videoPlaylistSuffixPublic) ? url.indexOf(videoPlaylistSuffixPublic) : url.length);
 	return url.slice(url.indexOf(playlistPrefix) + playlistPrefix.length, url.length);

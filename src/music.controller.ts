@@ -216,13 +216,14 @@ export class MusicController {
 			if (query.includes("www.youtube.com/")) {
 				const videoCode: string = getYoutubeVideoCode(query);
 				const playlistCode: string = getYoutubePlaylistCode(query);
-				let code: string = "";
 				if (playlistCode) {
+					console.log("fromplayliost", playlistCode, videoCode);
 					fromPlaylist(playlistCode, videoCode)
 					return;
 				}
-				if (code) {
-					fromCode(code);
+				if (videoCode) {
+					console.log("fromcode", videoCode);
+					fromCode(videoCode);
 					return;
 				}
 				reject();
