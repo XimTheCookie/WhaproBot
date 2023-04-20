@@ -1,7 +1,9 @@
 import { Client, GatewayIntentBits, GuildMember } from "discord.js";
 import { commands } from "./commands/commands";
 
+import { help } from "./commands/help/help.command";
 import { Configuration } from "./configuration";
+import { handleReply } from "./utils/utils";
 import { WhaproClass } from "./whapro";
 
 const whapro = new WhaproClass();
@@ -20,14 +22,18 @@ client.on("interactionCreate", (interaction) => {
 	const commandName: string = interaction.commandName;
 	console.log("Command received: " + commandName);
 	if (!interaction?.guild) {
-		interaction.reply("Not a server!");
+		if (commandName === "help") {
+			help.execute(interaction);
+			return;
+		}
+		handleReply(interaction, "user_not_server");
 		return;
 	}
 	const guild = interaction.guild;
 	const guildId = guild.id;
 	const voice = (interaction.member as GuildMember)?.voice?.channel;
 	const controller = whapro.getController(guildId);
-	
+
 	commands.find((c) => c.data.name === commandName)?.execute(interaction, controller, guild, voice);
 });
 

@@ -1,7 +1,7 @@
 import { AudioPlayerStatus } from "@discordjs/voice";
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource } from "../../utils/utils";
+import { getResource, handleReply } from "../../utils/utils";
 
 export const skip = 
 {
@@ -10,23 +10,23 @@ export const skip =
 		.setDescription("Skip the current track."),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			await interaction.reply(getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		if (!voice || voice?.id !== controller.getConnection()?.joinConfig?.channelId) {
-			await interaction.reply(getResource("user_not_same_voice"));
+			handleReply(interaction, getResource("user_not_same_voice"));
 			return;
 		}
 		if (controller.playerStatus(AudioPlayerStatus.Playing) || controller.playerStatus(AudioPlayerStatus.Paused)) {
 			controller.nextAudioResource();
 			const track = controller.nowPlaying();
 			if(track) {
-				await interaction.reply(`${getResource("track_skip")}\n\n${getResource("track_current_short", track.name)}`);
+				handleReply(interaction, `${getResource("track_skip")}\n\n${getResource("track_current_short", track.name)}`);
 				return;
 			} 
-			await interaction.reply(getResource("track_skip"));
+			handleReply(interaction, getResource("track_skip"));
 			return;
 		} 
-		await interaction.reply("Nothing to skip.");
+		handleReply(interaction, getResource("track_skip_none"));
 	}
 }

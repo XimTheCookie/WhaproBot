@@ -1,3 +1,4 @@
+import { ChatInputCommandInteraction } from "discord.js";
 import lang from "../resources/lang/lang.json";
 
 export function ArrayShuffle(Array: Array<any>) {
@@ -57,4 +58,13 @@ export function getYoutubePlaylistCode(url: string) {
 	if (url.includes(videoPlaylistPrefix)) 
 		return url.slice(url.indexOf(videoPlaylistPrefix) + videoPlaylistPrefix.length, url.includes(videoPlaylistSuffix) ? url.indexOf(videoPlaylistSuffix) : url.includes(videoPlaylistSuffixPublic) ? url.indexOf(videoPlaylistSuffixPublic) : url.length);
 	return url.slice(url.indexOf(playlistPrefix) + playlistPrefix.length, url.length);
+}
+
+export async function handleReply(interaction: ChatInputCommandInteraction, message: string, ephemeral: boolean = false) {
+	return interaction
+		.reply({
+			content: message,
+			ephemeral
+		})
+		.catch((e) => console.log(e));
 }

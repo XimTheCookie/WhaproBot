@@ -6,6 +6,7 @@
 	"track_add_playlist": "✅ Playlist ``{arg0}`` [{arg1}] added to queue.",
 	"track_add_playlist_n": "({arg0} Tracks)",
 	"track_skip": "⏭ Track skipped.",
+	"track_skip_none": "❌ No track to skip.",
 	"track_current": "🔊 ``{arg0}`` [{arg1}] is playing.",
 	"track_current_short": "🔊 ``{arg0}`` is playing.",
 	"track_current_none": "🔈 Nothing is playing on this server.",
@@ -38,14 +39,15 @@
 	"player_not_paused": "❌ Player is not paused.",
 	"player_already_paused": "❌ Player is already paused.",
 
-	"bot_leave": "Bot disconnected.",
-	"bot_join": "Bot joined channel <#{arg0}>.",
+	"bot_leave": "✅ Bot disconnected.",
+	"bot_join": "✅ Bot joined channel <#{arg0}>.",
 	"bot_not_voice": "❌ Bot is not connected to any voice channel.",
 	"bot_cannot_join": "❌ Bot is missing permission to join that voice channel.",
 
 	"user_not_voice": "❌ You must be in a voice channel to use that command.",
 	"user_not_same_voice": "❌ You must be in the same voice channel as the bot to use that command.",
 	"user_same_voice": "❌ You must be in the different voice channel to use that command.",
+	"user_not_server": "❌ That command is only available in a server.",
 
 	"command_help": "/help - Displays this list of commands.",
 	"command_play": "/play [query] - Add track to queue.",

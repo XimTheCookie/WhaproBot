@@ -1,15 +1,15 @@
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource } from "../../utils/utils";
+import { getResource, handleReply } from "../../utils/utils";
 
 export const help = 
 {
 	data: new SlashCommandBuilder()
 		.setName("help")
 		.setDescription("View a list of commands!"),
-	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
+	async execute(interaction: ChatInputCommandInteraction, controller?: MusicController, guild?: Guild, voice?: VoiceBasedChannel | null) {
 		let print: string = "";
-		print = print + "```ruby\n";
+		print = print + "```bf\n";
 		const commandList = [
 			"help",
 			"join",
@@ -21,6 +21,6 @@ export const help =
 			print = print + getResource(`command_${c}`) + "\n";
 		});
 		print = print + "```";
-		await interaction.reply(print);
+		handleReply(interaction, print, true);
 	}
 }

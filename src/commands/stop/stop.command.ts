@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource } from "../../utils/utils";
+import { getResource, handleReply } from "../../utils/utils";
 
 export const stop = 
 {
@@ -9,14 +9,14 @@ export const stop =
 		.setDescription("Clear queue and stop playing."),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			await interaction.reply(getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		if (!voice || voice?.id !== controller.getConnection()?.joinConfig?.channelId) {
-			await interaction.reply(getResource("user_not_same_voice"));
+			handleReply(interaction, getResource("user_not_same_voice"));
 			return;
 		}
 		controller.deleteConnection();
-		await interaction.reply(getResource("bot_leave"));
+		handleReply(interaction, getResource("bot_leave"));
 	}
 }

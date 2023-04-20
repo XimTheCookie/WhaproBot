@@ -4,10 +4,16 @@ import { QueueItem } from "./models/QueueItem.model";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { TrackType } from "./models/enums/TrackType.enum";
 import { getYoutubePlaylistCode, getYoutubeVideoCode } from "./utils/utils";
+
+const exit = async () => {
+	setTimeout(() => {
+		process.exit(0);
+	}, 1000);
+};
+
 const queue: QueueItem[] = [];
 
 const [query, userId] = workerData;
-
 
 new Promise<TrackAdd>((resolve, reject) => {
 	const add = (title: string, url: string) => {
@@ -90,11 +96,10 @@ new Promise<TrackAdd>((resolve, reject) => {
 	}
 })
 .then((result) => {
+	exit();
 	parentPort?.postMessage(result);
 })
 .catch((e) => {
+	exit();
 	parentPort?.postMessage(e);
-})
-.finally(() => {
-	parentPort?.close();
 });

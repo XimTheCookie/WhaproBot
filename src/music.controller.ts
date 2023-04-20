@@ -102,10 +102,6 @@ export class MusicController {
 
 	newConnection(guild: Guild, channelId: string) {
 
-		if (this.connection) {
-			this.connection.removeAllListeners("stateChange");
-		}
-
 		// Create a new connection object
 		const connection = 
 			joinVoiceChannel({
@@ -158,12 +154,12 @@ export class MusicController {
 			const fetcher = new Worker("./output/fetch-process.js", {workerData: [query, userId]});
 			fetcher.on("message", (result: TrackAdd | string) => {
 				if (typeof result === "string") {
-					reject(result);
+					reject(result);	
 					return;
 				}
 				if (result?.queue.length)
 					this.queue.getQueue().push(...result?.queue);
-				this.nextAudioResourceIfIdle();
+				this.nextAudioResourceIfIdle()
 				resolve(result);
 			});
 		});

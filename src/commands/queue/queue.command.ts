@@ -2,7 +2,7 @@
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { Configuration } from "../../configuration";
 import { MusicController } from "../../music.controller";
-import { getResource } from "../../utils/utils";
+import { getResource, handleReply } from "../../utils/utils";
 
 const itemsPerPage: number = Configuration.getItemsPerQueuePage() ?? 15;
 
@@ -18,7 +18,7 @@ export const queue =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			await interaction.reply(getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		const input: number = interaction.options.getInteger("page") ?? 1;
@@ -56,6 +56,6 @@ export const queue =
 			print = print + `\n${getResource("queue_loop_on")}`;
 		}
 
-		await interaction.reply(print);
+		await handleReply(interaction, print);
 	}
 }
