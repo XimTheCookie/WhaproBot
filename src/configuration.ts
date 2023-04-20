@@ -13,4 +13,5 @@ export class Configuration {
 	static getItemsPerQueuePage() {
 		return config.queueListItems;
 	}
+
 }

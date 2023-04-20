@@ -1,11 +1,9 @@
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection, VoiceConnectionStatus, createAudioPlayer, createAudioResource, joinVoiceChannel } from "@discordjs/voice";
 import { Guild } from "discord.js";
-import yts from "yt-search";
+import { Worker } from "worker_threads";
 import ytdl from "ytdl-core";
 import { TrackAdd } from "./models/TrackAdd.model";
-import { TrackType } from "./models/enums/TrackType.enum";
 import { QueueController } from "./queue.controller";
-import { getResource, getYoutubePlaylistCode, getYoutubeVideoCode } from "./utils/utils";
 
 export class MusicController {
 	
@@ -156,79 +154,19 @@ export class MusicController {
 	}
 
 	async addMusic(query: string, userId: string) {
-		
-		return new Promise<TrackAdd | undefined>((resolve, reject) => {
-			const add = (title: string, url: string) => {
-				this.queue.add(title, url, userId);
+		return new Promise<TrackAdd>((resolve, reject) => {
+			const fetcher = new Worker("./output/fetch-process.js", {workerData: [query, userId]});
+			fetcher.on("message", (result: TrackAdd | string) => {
+				if (typeof result === "string") {
+					reject(result);
+					return;
+				}
+				if (result?.queue.length)
+					this.queue.getQueue().push(...result?.queue);
 				this.nextAudioResourceIfIdle();
-				resolve({
-					track: {
-						name: title,
-						url: url,
-						userId: userId
-					},
-					type: TrackType.video
-				});
-			};
-			const fromPlaylist = (pCode: string, code: string) => {
-				yts({listId: pCode}, (error, data) => {
-					if (error) {
-						if (code) fromCode(code);
-						else reject("track_error_playlist");
-						return;
-					}
-					if (data?.videos?.length > 0) {
-						data.videos.forEach((v) => {
-							if (v?.videoId)
-								this.queue.add(v?.title, "https://www.youtube.com/watch?v=" + v?.videoId, userId);
-						});
-						this.nextAudioResourceIfIdle();
-						resolve({
-							track: {
-								name: data?.title + getResource("track_add_playlist_n", data?.videos?.length.toString()),
-								url: data?.url,
-								userId: userId
-							},
-							type: TrackType.playlist
-						});
-					}
-				});
-			};
-			const search = () => {
-				yts(query, (error, data) => {
-					if (error) reject();
-					if (data.videos?.length > 0) {
-						const title = data?.videos[0]?.title
-						const url = data?.videos[0]?.url;
-						add(title, url);
-					} else reject("track_error_no_results");
-				});
-			};
-			const fromCode = (code: string) => {
-				yts({videoId: code}, (error, data) => {
-					if (error) reject("track_error");
-					const title = data?.title
-					const url = data?.url;
-					add(title, url);
-				});
-			};
-			
-			if (query.includes("youtube.com/") || query.includes("youtu.be/")) {
-				const videoCode: string = getYoutubeVideoCode(query);
-				const playlistCode: string = getYoutubePlaylistCode(query);
-				if (playlistCode) {
-					fromPlaylist(playlistCode, videoCode)
-					return;
-				}
-				if (videoCode) {
-					fromCode(videoCode);
-					return;
-				}
-				reject("track_error_no_track");
-			} else {
-				search();
-			}
-		})
+				resolve(result);
+			});
+		});
 	}
 
 	nextAudioResourceIfIdle() {

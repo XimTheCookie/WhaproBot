@@ -37,17 +37,15 @@ export const play =
 
 		if (query) {
 			await interaction.reply(getResource("track_add_w", query));
-			
 			controller.addMusic(query, interaction.user.id).then((result) => {
 				if (result?.type === TrackType.playlist)
-					interaction.editReply(getResource("track_add_playlist", result?.track?.name, result?.track?.url));
+					interaction.editReply(getResource("track_add_playlist", `${result.track.name} ${getResource("track_add_playlist_n", result?.queue?.length?.toString())}`, result?.track?.url));
 				else
 					interaction.editReply(getResource("track_add", result?.track?.name, result?.track?.url));
 			}).catch((e) => {
 				interaction.editReply(getResource(e));
 			})
 			return;
-		}
-		await interaction.reply(getResource("track_no_query"));
+		} else	await interaction.reply(getResource("track_no_query"));
 	}
 }

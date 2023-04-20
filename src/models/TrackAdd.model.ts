@@ -3,5 +3,6 @@ import { TrackType } from "./enums/TrackType.enum";
 
 export interface TrackAdd {
 	track: QueueItem;
-	type: TrackType
+	type: TrackType;
+	queue: QueueItem[];
 }
