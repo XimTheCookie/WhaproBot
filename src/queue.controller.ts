@@ -44,7 +44,6 @@ export class QueueController {
 	}
 
 	clear() {
-		console.log("CLEAR");
 		this.items = [];
 		this.np = undefined;
 	}
