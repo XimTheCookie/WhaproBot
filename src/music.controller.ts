@@ -242,8 +242,8 @@ export class MusicController {
 		return this.queue.nowPlaying();
 	}
 
-	clear() {
-		this.queue.clear();
+	clear(uid?: string) {
+		this.queue.clear(uid);
 	}
 
 	remove(index: number) {

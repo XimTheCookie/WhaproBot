@@ -34,7 +34,7 @@ export const queue =
 			print = print + `${getResource("queue_list")}\n`;
 			print = print + "```json\n";
 			
-			const pages: number = Math.floor(queue?.length / itemsPerPage);
+			//const pages: number = Math.floor(queue?.length / itemsPerPage);
 			const maxPages: number = Math.ceil(queue?.length / itemsPerPage);
 
 			const requiredPage: number = inputPage >= maxPages ? maxPages : inputPage < 1 ? 1 : inputPage;

@@ -4,11 +4,13 @@ import { ArrayMove, ArrayRemove, ArrayShuffle } from "./utils/utils";
 export class QueueController {
 	private items: QueueItem[] = [];
 	private np: QueueItem | undefined = undefined;
+	private onPush: QueueItem | undefined = undefined;
 	private loop: boolean = false;
 
 	next(): QueueItem | undefined {
-		if (this.np && this.loop) this.items.push(this.np);
+		if (this.onPush && this.loop) this.items.push(this.onPush);
 		this.np = this.items.shift();
+		this.onPush = this.np;
 		return this.np;
 	}
 
@@ -43,9 +45,15 @@ export class QueueController {
 		return this.loop;
 	}
 
-	clear() {
-		this.items = [];
-		this.np = undefined;
+	clear(uid?: string) {
+		if (uid) {
+			this.items = this.items.filter(i => i.userId !== uid);
+			if (this.onPush?.userId === uid) this.onPush = undefined;
+		} else {
+			this.items = [];
+			this.onPush = undefined;
+		}
+		
 	}
 
 	getQueue() {

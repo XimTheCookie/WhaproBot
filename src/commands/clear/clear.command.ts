@@ -6,7 +6,12 @@ export const clear =
 {
 	data: new SlashCommandBuilder()
 		.setName("clear")
-		.setDescription(getResource("command_clear_dsc")),
+		.setDescription(getResource("command_clear_dsc"))
+		.addUserOption((option) => 
+			option.setName("user")
+			.setDescription(getResource("command_clear_dsc_option_user"))
+			.setRequired(false)
+		),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			handleReply(interaction, getResource("bot_not_voice"), true);
@@ -17,15 +22,26 @@ export const clear =
 			return;
 		}
 
+		const removeUid = interaction.options.getUser("user")?.id;
+
 		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 
-		if (voice.members.size > 3 && !controller.canUseDJCommands(member)) {
+		if (
+			(
+				(voice.members.size > 3 && !removeUid)
+				|| 
+				(removeUid && removeUid !== interaction.user.id)
+			)
+			&&
+			!controller.canUseDJCommands(member)
+			) {
 			handleReply(interaction, getResource("user_not_perm"), true);
 			return;
 		} 
+
 		
 		const length = controller.getQueue().length;
-		controller.clear();
+		controller.clear(removeUid);
 		handleReply(interaction, getResource("queue_clear", length.toString()));
 	}
 }

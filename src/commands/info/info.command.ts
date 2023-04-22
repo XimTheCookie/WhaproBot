@@ -10,7 +10,7 @@ export const info =
 		.addIntegerOption(option => 
 			option.setName("index")
 				.setDescription(getResource("command_info_dsc_option_index"))
-				.setRequired(true) 
+				.setRequired(false) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
@@ -18,12 +18,18 @@ export const info =
 			return;
 		}
 		const index = interaction.options.getInteger("index");
-		if(!index || index < 1 || index > controller.getQueue().length) {
+		if (!index || index < 1) {
+			const track = controller.nowPlaying();
+			if(track) handleReply(interaction, `${getResource("track_current", track?.name, track?.url)}\n\n${getResource("track_user", track?.userId)}`);
+			else handleReply(interaction, getResource("track_current_none"));
+			return;
+		}
+		if (index > controller.getQueue().length) {
 			handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"), true);
 			return;
 		}
 		const track = controller.getQueue()[index - 1];
-		if(track) {
+		if (track) {
 			handleReply(interaction, `${getResource("queue_info", track?.name, track?.url, index.toString())}\n\n${getResource("track_user", track?.userId)}`);
 		} else handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : ""));
 	}
