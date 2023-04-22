@@ -16,6 +16,7 @@ export const shuffle =
 			handleReply(interaction, getResource("user_not_same_voice"), true);
 			return;
 		}
+		
 		controller.shuffle();
 		handleReply(interaction, getResource("queue_shuffle"));
 	}

@@ -45,4 +45,22 @@ export class Configuration {
 		return serverSettingsPath;
 	}
 
+	static getInactivitySeconds() {
+		const inactivitySeconds: number = config?.inactivitySeconds;
+		if (inactivitySeconds < 0 || inactivitySeconds === null || inactivitySeconds === undefined) {
+			log(getResource("system_not_valid_is"), LogType.warn);
+			process.exit(1);
+		}
+		return inactivitySeconds;
+	}
+
+	static getAloneSeconds() {
+		const aloneSeconds: number = config?.aloneSeconds;
+		if (aloneSeconds < 0 || aloneSeconds === null || aloneSeconds === undefined) {
+			log(getResource("system_not_valid_as"), LogType.warn);
+			process.exit(1);
+		}
+		return aloneSeconds;
+	}
+
 }

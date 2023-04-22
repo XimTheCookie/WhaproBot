@@ -20,6 +20,17 @@ export const join =
 			handleReply(interaction, getResource("bot_cannot_join"), true);
 			return;
 		}
+
+		
+		const botChannelId = controller.getConnection()?.joinConfig?.channelId;
+		if (botChannelId) {
+			const usersInOldVoice = (guild.channels.cache.get(botChannelId) as VoiceBasedChannel)?.members?.size;
+			const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
+			if (usersInOldVoice && usersInOldVoice > 1 && !controller.canUseDJCommands(member)) {
+				handleReply(interaction, getResource("user_not_perm"), true);
+				return;
+			}
+		}
 		
 		controller.newConnection(guild, voice.id);
 		handleReply(interaction, getResource("bot_join", voice.id));

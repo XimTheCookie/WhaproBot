@@ -16,6 +16,14 @@ export const clear =
 			handleReply(interaction, getResource("user_not_same_voice"), true);
 			return;
 		}
+
+		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
+
+		if (voice.members.size > 3 && !controller.canUseDJCommands(member)) {
+			handleReply(interaction, getResource("user_not_perm"), true);
+			return;
+		} 
+		
 		const length = controller.getQueue().length;
 		controller.clear();
 		handleReply(interaction, getResource("queue_clear", length.toString()));

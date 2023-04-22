@@ -115,6 +115,8 @@
 	"system_missing_clientid": "BOT CLIENT ID IS MISSING",
 	"system_not_valid_ipp": "BOT ITEMS PER QUEUE PAGE HAS NOT A VALID VALUE",
 	"system_missing_settings_path": "SERVER SETTINGS PATH IS MISSING",
+	"system_not_valid_is": "BOT INACTIVITY SECONDS HAS NOT A VALID VALUE",
+	"system_not_valid_as": "BOT ALONE SECONDS HAS NOT A VALID VALUE",
 
 	"custom_about": "WhaproBot, Node Discord Music Bot by Ximmeme!"
 }

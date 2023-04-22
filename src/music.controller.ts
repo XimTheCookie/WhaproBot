@@ -2,6 +2,7 @@ import { AudioPlayer, AudioPlayerStatus, VoiceConnection, VoiceConnectionStatus,
 import { Guild, GuildMember } from "discord.js";
 import { Worker } from "worker_threads";
 import ytdl from "ytdl-core";
+import { Configuration } from "./configuration";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { QueueController } from "./queue.controller";
 import { SettingsService } from "./settings.service";
@@ -23,7 +24,7 @@ export class MusicController {
 		SettingsService.getSettings(guildId).then((result) => {
 			if (result?.djRoleId)
 				this.djRoleId = result?.djRoleId;
-		}).catch((e) => log(e));
+		}).catch((e) => {});
 	}
 
 	getPlayer() {
@@ -44,10 +45,12 @@ export class MusicController {
 		player.on("stateChange", (oldState, newState) => {
 			
 			if ((oldState.status === AudioPlayerStatus.Playing || oldState.status === AudioPlayerStatus.Paused ) && newState.status === AudioPlayerStatus.Idle) {
-				this.inactivityTimeout = setTimeout(() => {
-					log(getResource("bot_inactivity_timeout", this.guildId));
-					this.getConnection()?.destroy();
-				}, 30 * 1000);
+				const inactivitySeconds: number = Configuration.getInactivitySeconds();
+				if (inactivitySeconds > 0)
+					this.inactivityTimeout = setTimeout(() => {
+						log(getResource("bot_inactivity_timeout", this.guildId));
+						this.getConnection()?.destroy();
+					}, inactivitySeconds * 1000);
 				this.nextAudioResourceIfIdle();
 			}
 				
@@ -143,7 +146,6 @@ export class MusicController {
 		// Returns the new connection
 		return this.connection;
 	}
-
 
 	deleteConnection() {
 		this.clear();
@@ -255,11 +257,12 @@ export class MusicController {
 	}
 
 	startAloneTimeout() {
-		if (!this.aloneTimeout)
+		const aloneSeconds: number = Configuration.getAloneSeconds();
+		if (!this.aloneTimeout && aloneSeconds > 0)
 			this.aloneTimeout = setTimeout(() => {
 				log(getResource("bot_alone_timeout", this.guildId));
 				this.getConnection()?.destroy();
-			}, 2 * 60 * 1000);
+			}, aloneSeconds * 1000);
 	}
 
 	stopAloneTimeout() {
@@ -284,7 +287,8 @@ export class MusicController {
 		return this.djRoleId;
 	}
 
-	canUseDJCommands(member: GuildMember) {
+	canUseDJCommands(member?: GuildMember) {
+		if (!member) return false;
 		const djRoleId = this.djRoleId;
 		if (djRoleId) return hasRole(member, djRoleId) || hasSetDJPerm(member);
 		return hasSetDJPerm(member);
