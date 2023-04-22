@@ -1,16 +1,16 @@
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { TrackType } from "../../models/enums/TrackType.enum";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleEditReply, handleReply } from "../../utils/utils";
 
 export const play = 
 {
 	data: new SlashCommandBuilder()
 		.setName("play")
-		.setDescription("Plays audio from URL or Search!")
+		.setDescription(getResource("command_play_dsc"))
 		.addStringOption(option => 
 			option.setName("query")
-				.setDescription("URL or Search query!")
+				.setDescription(getResource("command_play_dsc_option_query"))
 				.setRequired(true) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
@@ -39,11 +39,11 @@ export const play =
 			handleReply(interaction, getResource("track_add_w", query));
 			controller.addMusic(query, interaction.user.id).then((result) => {
 				if (result?.type === TrackType.playlist)
-					interaction.editReply(getResource("track_add_playlist", `${result.track.name} ${getResource("track_add_playlist_n", result?.queue?.length?.toString())}`, result?.track?.url));
+					handleEditReply(interaction, getResource("track_add_playlist", `${result.track.name} ${getResource("track_add_playlist_n", result?.queue?.length?.toString())}`, result?.track?.url))
 				else
-					interaction.editReply(getResource("track_add", result?.track?.name, result?.track?.url));
+					handleEditReply(interaction, getResource("track_add", result?.track?.name, result?.track?.url));
 			}).catch((e) => {
-				interaction.editReply(getResource(e));
+				handleEditReply(interaction, getResource(e));
 			})
 			return;
 		} else	handleReply(interaction, getResource("track_no_query"));

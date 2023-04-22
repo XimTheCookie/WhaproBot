@@ -4,6 +4,7 @@ import { Worker } from "worker_threads";
 import ytdl from "ytdl-core";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { QueueController } from "./queue.controller";
+import { getResource, log } from "./utils/utils";
 
 export class MusicController {
 	
@@ -11,6 +12,8 @@ export class MusicController {
 	private connection: VoiceConnection | null = null;
 	private player: AudioPlayer | null = null;
 	private queue = new QueueController();
+	private inactivityTimeout: NodeJS.Timeout | null = null;
+	private aloneTimeout: NodeJS.Timeout | null = null;
 
 	constructor(guildId: string) {
 		this.guildId = guildId;
@@ -29,23 +32,25 @@ export class MusicController {
 	private newPlayer() {
 		// Creates a new player and stores it
 		const player: AudioPlayer = createAudioPlayer();
-		let notPlaying: Date | null = new Date();
 
 		// Whenever this player changes status from playing to idle, the next audio resource is called
 		player.on("stateChange", (oldState, newState) => {
 			
-			if(oldState.status === AudioPlayerStatus.Playing && newState.status === AudioPlayerStatus.Idle) {
-				notPlaying = new Date();
-				setTimeout(() => {
-					if(notPlaying && (notPlaying.getSeconds() + 30 >= new Date().getSeconds())) 
-						this.deleteConnection();
-				}, 30000);
-				this.nextAudioResource();
+			if ((oldState.status === AudioPlayerStatus.Playing || oldState.status === AudioPlayerStatus.Paused ) && newState.status === AudioPlayerStatus.Idle) {
+				this.inactivityTimeout = setTimeout(() => {
+					log(getResource("bot_inactivity_timeout", this.guildId));
+					this.getConnection()?.destroy();
+				}, 30 * 1000);
+				this.nextAudioResourceIfIdle();
 			}
 				
 
-				if(newState.status === AudioPlayerStatus.Playing) {
-					notPlaying = null;
+				if (newState.status === AudioPlayerStatus.Playing) {
+					if (this.inactivityTimeout)
+						{
+							clearTimeout(this.inactivityTimeout)
+							this.inactivityTimeout = null;
+						}
 				}
 		})
 		
@@ -101,7 +106,6 @@ export class MusicController {
 
 
 	newConnection(guild: Guild, channelId: string) {
-
 		// Create a new connection object
 		const connection = 
 			joinVoiceChannel({
@@ -145,7 +149,7 @@ export class MusicController {
 		if(player) {
 			this.deletePlayer();
 		}
-
+		this.stopAloneTimeout();
 		this.connection = null;
 	}
 
@@ -237,6 +241,21 @@ export class MusicController {
 
 	switch(firstIndex: number, secondIndex: number) {
 		this.queue.move(firstIndex, secondIndex);
+	}
+
+	startAloneTimeout() {
+		if (!this.aloneTimeout)
+			this.aloneTimeout = setTimeout(() => {
+				log(getResource("bot_alone_timeout", this.guildId));
+				this.getConnection()?.destroy();
+			}, 2 * 60 * 1000);
+	}
+
+	stopAloneTimeout() {
+		if (this.aloneTimeout) {
+			clearTimeout(this.aloneTimeout);
+			this.aloneTimeout = null;
+		}
 	}
 	
 }

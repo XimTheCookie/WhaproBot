@@ -6,7 +6,7 @@ export const shuffle =
 {
 	data: new SlashCommandBuilder()
 		.setName("shuffle")
-		.setDescription("Shuffles the queue."),
+		.setDescription(getResource("command_shuffle_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			handleReply(interaction, getResource("bot_not_voice"));

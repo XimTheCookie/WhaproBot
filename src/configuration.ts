@@ -1,17 +1,39 @@
 import config from "./configuration.json";
+import { LogType } from "./models/enums/LogType.enum";
+import { getResource, log } from "./utils/utils";
 
 export class Configuration {
 	
 	static getToken() {
-		return config.token;
+		const token: string = config?.token;
+		if (!token) {
+			log(getResource("system_missing_token"), LogType.warn);
+			process.exit(1);
+		}
+		return token;
 	}
 
 	static getClientId() {
-		return config.botClientId;
+		const botClientId: string = config?.botClientId;
+		if (!botClientId) {
+			log(getResource("system_missing_clientid"), LogType.warn);
+			process.exit(1);
+		}
+		return botClientId;
 	}
 
 	static getItemsPerQueuePage() {
-		return config.queueListItems;
+		const queueListItems: number = config?.queueListItems;
+		if (queueListItems < 1) {
+			log(getResource("system_not_valid_ipp"), LogType.warn);
+			process.exit(1);
+		}
+		return queueListItems;
+	}
+
+	static useLog() {
+		const useLog: boolean = config?.useLog;
+		return !! useLog;
 	}
 
 }

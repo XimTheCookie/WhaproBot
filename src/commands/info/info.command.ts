@@ -6,10 +6,10 @@ export const info =
 {
 	data: new SlashCommandBuilder()
 		.setName("info")
-		.setDescription("Info about a track in queue!")
+		.setDescription(getResource("command_info_dsc"))
 		.addIntegerOption(option => 
 			option.setName("index")
-				.setDescription("Index of the track.")
+				.setDescription(getResource("command_info_dsc_option_index"))
 				.setRequired(true) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {

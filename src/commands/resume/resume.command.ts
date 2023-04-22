@@ -7,7 +7,7 @@ export const resume =
 {
 	data: new SlashCommandBuilder()
 		.setName("resume")
-		.setDescription("Resumes the player."),
+		.setDescription(getResource("command_resume_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			handleReply(interaction, getResource("bot_not_voice"));

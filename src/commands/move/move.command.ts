@@ -6,15 +6,15 @@ export const move =
 {
 	data: new SlashCommandBuilder()
 		.setName("move")
-		.setDescription("Switch two tracks.")
+		.setDescription(getResource("command_move_dsc"))
 		.addIntegerOption(option1 => 
 			option1.setName("first")
-				.setDescription("Index of the first track.")
+				.setDescription(getResource("command_move_dsc_option_first"))
 				.setRequired(true) 
 			)
 		.addIntegerOption(option2 => 
 			option2.setName("second")
-				.setDescription("Index of the second track.")
+				.setDescription(getResource("command_move_dsc_option_second"))
 				.setRequired(true) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {

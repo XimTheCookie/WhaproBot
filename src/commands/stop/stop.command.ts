@@ -6,7 +6,7 @@ export const stop =
 {
 	data: new SlashCommandBuilder()
 		.setName("stop")
-		.setDescription("Clear queue and stop playing."),
+		.setDescription(getResource("command_stop_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			handleReply(interaction, getResource("bot_not_voice"));

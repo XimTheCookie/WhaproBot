@@ -6,10 +6,10 @@ export const remove =
 {
 	data: new SlashCommandBuilder()
 		.setName("remove")
-		.setDescription("Remove a track from queue.")
+		.setDescription(getResource("command_remove_dsc"))
 		.addIntegerOption(option => 
 			option.setName("index")
-				.setDescription("Index of the track to remove.")
+				.setDescription(getResource("command_remove_dsc_option_index"))
 				.setRequired(true) 
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {

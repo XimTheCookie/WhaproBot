@@ -7,7 +7,7 @@ export const skip =
 {
 	data: new SlashCommandBuilder()
 		.setName("skip")
-		.setDescription("Skip the current track."),
+		.setDescription(getResource("command_skip_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
 			handleReply(interaction, getResource("bot_not_voice"));

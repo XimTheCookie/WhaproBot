@@ -1,4 +1,6 @@
 import { ChatInputCommandInteraction } from "discord.js";
+import { Configuration } from "../configuration";
+import { LogType } from "../models/enums/LogType.enum";
 import lang from "../resources/lang/lang.json";
 
 export function ArrayShuffle(Array: Array<any>) {
@@ -66,5 +68,21 @@ export async function handleReply(interaction: ChatInputCommandInteraction, mess
 			content: message,
 			ephemeral
 		})
-		.catch((e) => console.log(e));
+		.catch((e) => log(e, LogType.error));
+}
+
+export async function handleEditReply(interaction: ChatInputCommandInteraction, message: string, ephemeral: boolean = false) {
+	return interaction
+		.editReply({
+			content: message
+		})
+		.catch((e) => log(e, LogType.error));
+}
+
+export function log(content: string, type: LogType = LogType.info) {
+	if (!Configuration.useLog()) return;
+	const message = getResource("system_log", getResource("system_log_type_" + type), new Date().toString(), content);
+	if (type === LogType.info) console.log(message);
+	else if (type === LogType.error) console.error(message);
+	else console.warn(message);
 }

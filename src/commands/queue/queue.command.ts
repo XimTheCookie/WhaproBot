@@ -10,10 +10,10 @@ export const queue =
 {
 	data: new SlashCommandBuilder()
 		.setName("queue")
-		.setDescription("View server queue!")
+		.setDescription(getResource("command_queue_dsc"))
 		.addIntegerOption(option => 
 			option.setName("page")
-				.setDescription("Page number")
+				.setDescription(getResource("command_queue_dsc_option_page"))
 				.setRequired(false)
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {

@@ -6,7 +6,7 @@ export const join =
 {
 	data: new SlashCommandBuilder()
 		.setName("join")
-		.setDescription("Join your voice channel!"),
+		.setDescription(getResource("command_join_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!voice) {
 			handleReply(interaction, getResource("user_not_voice"));

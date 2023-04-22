@@ -1,5 +1,6 @@
 {
 	"token": "",
 	"botClientId": "",
-	"queueListItems": 15
+	"queueListItems": 15,
+	"useLog": true
 }
