@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, GuildMember, VoiceState } from "discord.js";
 import { commands } from "./commands/commands";
 
+import { about } from "./commands/about/about.command";
 import { help } from "./commands/help/help.command";
 import { Configuration } from "./configuration";
 import { getResource, handleReply, log } from "./utils/utils";
@@ -21,10 +22,14 @@ client.on("interactionCreate", (interaction) => {
 	if (!interaction.isChatInputCommand() || interaction.user.bot) return;
 	const commandName: string = interaction.commandName;
 	log(getResource("system_on_command", commandName, interaction?.user?.username + " (" + interaction?.user?.id + ")", interaction?.guild ? interaction?.guild.name + " (" + interaction?.guild?.id + ")" : "none"))
-	if (commandName === "help" || commandName === "about") {
+	if (commandName === "help") {
 		help.execute(interaction);
 		return;
-	}
+	} 
+	if (commandName === "about") {
+		about.execute(interaction);
+		return;
+	} 
 	if (!interaction?.guild) {
 		handleReply(interaction, getResource("user_not_server"));
 		return;
