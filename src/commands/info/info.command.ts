@@ -14,12 +14,12 @@ export const info =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"), true);
 			return;
 		}
 		const index = interaction.options.getInteger("index");
 		if(!index || index < 1 || index > controller.getQueue().length) {
-			handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"));
+			handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"), true);
 			return;
 		}
 		const track = controller.getQueue()[index - 1];

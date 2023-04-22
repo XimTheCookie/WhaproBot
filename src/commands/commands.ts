@@ -10,6 +10,7 @@ import { play } from "./play/play.command.js";
 import { queue } from "./queue/queue.command";
 import { remove } from "./remove/remove.command";
 import { resume } from "./resume/resume.command.js";
+import { setdj } from "./setdj/setdj.command";
 import { shuffle } from "./shuffle/shuffle.command.js";
 import { skip } from "./skip/skip.command.js";
 import { stop } from "./stop/stop.command.js";
@@ -29,5 +30,6 @@ export const commands = [
 	move,
 	info,
 	clear,
-	about
+	about,
+	setdj
 ];

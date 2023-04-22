@@ -36,4 +36,13 @@ export class Configuration {
 		return !! useLog;
 	}
 
+	static getSettingsPath() {
+		const serverSettingsPath: string = config?.serverSettingsPath;
+		if (!serverSettingsPath) {
+			log(getResource("system_missing_settings_path"), LogType.warn);
+			process.exit(1);
+		}
+		return serverSettingsPath;
+	}
+
 }

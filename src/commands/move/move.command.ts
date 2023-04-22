@@ -19,29 +19,29 @@ export const move =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"), true);
 			return;
 		}
 		if (!voice || voice?.id !== controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("user_not_same_voice"));
+			handleReply(interaction, getResource("user_not_same_voice"), true);
 			return;
 		}
 		const firstIndex = interaction.options.getInteger("first");
 		const secondIndex = interaction.options.getInteger("second");
 		if (firstIndex === null || secondIndex == null || firstIndex < 1 || secondIndex < 1) {
-			handleReply(interaction, getResource("queue_move_invalid"));
+			handleReply(interaction, getResource("queue_move_invalid"), true);
 			return;
 		}
 		if (controller.getQueue().length < firstIndex) {
-			handleReply(interaction, getResource("queue_move_no_index", firstIndex.toString()));
+			handleReply(interaction, getResource("queue_move_no_index", firstIndex.toString()), true);
 			return;
 		}
 		if (controller.getQueue().length < secondIndex) {
-			handleReply(interaction, getResource("queue_move_no_index", secondIndex.toString()));
+			handleReply(interaction, getResource("queue_move_no_index", secondIndex.toString()), true);
 			return;
 		}
 		if (firstIndex === secondIndex) {
-			handleReply(interaction, getResource("queue_move_itself"));
+			handleReply(interaction, getResource("queue_move_itself"), true);
 			return;
 		}
 		const firstName = controller.getQueue()[firstIndex - 1]?.name;

@@ -1,22 +1,29 @@
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection, VoiceConnectionStatus, createAudioPlayer, createAudioResource, joinVoiceChannel } from "@discordjs/voice";
-import { Guild } from "discord.js";
+import { Guild, GuildMember } from "discord.js";
 import { Worker } from "worker_threads";
 import ytdl from "ytdl-core";
 import { TrackAdd } from "./models/TrackAdd.model";
 import { QueueController } from "./queue.controller";
-import { getResource, log } from "./utils/utils";
+import { SettingsService } from "./settings.service";
+import { getResource, hasRole, hasSetDJPerm, log } from "./utils/utils";
 
 export class MusicController {
 	
 	private guildId: string;
+	private djRoleId: string = "";
 	private connection: VoiceConnection | null = null;
 	private player: AudioPlayer | null = null;
 	private queue = new QueueController();
 	private inactivityTimeout: NodeJS.Timeout | null = null;
 	private aloneTimeout: NodeJS.Timeout | null = null;
+	private currentSkipVotes: string[] = [];
 
 	constructor(guildId: string) {
 		this.guildId = guildId;
+		SettingsService.getSettings(guildId).then((result) => {
+			if (result?.djRoleId)
+				this.djRoleId = result?.djRoleId;
+		}).catch((e) => log(e));
 	}
 
 	getPlayer() {
@@ -153,7 +160,7 @@ export class MusicController {
 		this.connection = null;
 	}
 
-	async addMusic(query: string, userId: string) {
+	async addMusic(query: string, userId: string, next: boolean) {
 		return new Promise<TrackAdd>((resolve, reject) => {
 			const fetcher = new Worker("./output/fetch-process.js", {workerData: [query, userId]});
 			fetcher.on("message", (result: TrackAdd | string) => {
@@ -161,8 +168,11 @@ export class MusicController {
 					reject(result);	
 					return;
 				}
-				if (result?.queue.length)
-					this.queue.getQueue().push(...result?.queue);
+				if (result?.queue.length) {
+					if (next) this.queue.getQueue().unshift(...result?.queue);
+					else this.queue.getQueue().push(...result?.queue);
+				}
+					
 				this.nextAudioResourceIfIdle()
 				resolve(result);
 			});
@@ -176,6 +186,7 @@ export class MusicController {
 	}
 
 	nextAudioResource() {
+		this.currentSkipVotes = [];
 		const url = this.queue.next()?.url;
 		const player = this.getPlayer();
 		if (url) {
@@ -256,6 +267,38 @@ export class MusicController {
 			clearTimeout(this.aloneTimeout);
 			this.aloneTimeout = null;
 		}
+	}
+
+	setDJRole(id: string = "") {
+		this.djRoleId = id;
+		this.saveDJRole();
+	}
+
+	saveDJRole() {
+		SettingsService.saveSettings(this.guildId, {djRoleId: this.djRoleId})
+		.then((result) => console.log(result))
+		.catch((e) => console.log(e))
+	}
+
+	getDJRole() {
+		return this.djRoleId;
+	}
+
+	canUseDJCommands(member: GuildMember) {
+		const djRoleId = this.djRoleId;
+		if (djRoleId) return hasRole(member, djRoleId) || hasSetDJPerm(member);
+		return hasSetDJPerm(member);
+	}
+
+	addSkipVote(uid: string, requiredToSkip: number): number | boolean {
+		if (this.currentSkipVotes.includes(uid)) return false;
+		this.currentSkipVotes.push(uid);
+		if (this.currentSkipVotes.length >= requiredToSkip) {
+			this.nextAudioResource();
+			return true;
+		}
+			
+		return this.currentSkipVotes.length;
 	}
 	
 }

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, GuildMember, PermissionResolvable } from "discord.js";
 import { Configuration } from "../configuration";
 import { LogType } from "../models/enums/LogType.enum";
 import lang from "../resources/lang/lang.json";
@@ -85,4 +85,18 @@ export function log(content: string, type: LogType = LogType.info) {
 	if (type === LogType.info) console.log(message);
 	else if (type === LogType.error) console.error(message);
 	else console.warn(message);
+}
+
+export function hasRole(member: GuildMember, roleId: string) {
+	return !!member?.roles?.cache?.find((r) => r?.id === roleId);
+}
+
+export function hasPermission(member: GuildMember, permission: PermissionResolvable) {
+	return member?.permissions.has(permission);
+}
+
+export function hasSetDJPerm(member: GuildMember) {
+	const isAdmin = hasPermission(member, "Administrator")
+	const hasPermissions = hasPermission(member, "ManageChannels") && hasPermission(member, "ManageRoles");
+	return isAdmin || hasPermissions;
 }

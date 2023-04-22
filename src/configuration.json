@@ -1,6 +1,7 @@
 {
 	"token": "",
 	"botClientId": "",
+	"serverSettingsPath": "src/resources/settings/", //"src/resources/settings/"
 	"queueListItems": 15,
 	"useLog": true
 }

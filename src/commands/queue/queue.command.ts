@@ -18,7 +18,7 @@ export const queue =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"));
+			handleReply(interaction, getResource("bot_not_voice"), true);
 			return;
 		}
 		const input: number = interaction.options.getInteger("page") ?? 1;

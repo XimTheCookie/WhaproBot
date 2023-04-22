@@ -48,9 +48,8 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 	const isAlone = (s?: VoiceState) => {
 		const state = s;
 		if (!state) return;
-		let count: number = 0; // Set channel member count to 0
 		const guild = state?.guild;
-		if (state?.channel) state?.channel?.members?.forEach((m) => count++) // Check the channel and count member, channel includes bot
+		const count = state?.channel?.members?.size; // Check the channel and count member, channel includes bot
 		if (count === 1) whapro.getController(guild.id).startAloneTimeout(); // If bot is alone (since channel includes bot, 1 is bot only), start timeout
 		else whapro.getController(guild.id).stopAloneTimeout(); // If bot is not alone, stop timeout
 	};
