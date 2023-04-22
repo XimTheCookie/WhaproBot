@@ -18,7 +18,10 @@ yarn-error.log
 .history/*
 
 # Configuration
-src/configuration.json
+/src/configuration.json
 configuration.json
 src/configuration.json
-src/configuration.json
+
+# Server Settings
+/src/resources/settings/*.json
+src/resources/settings/*.json
