@@ -62,11 +62,11 @@ export const move =
 			moveEmbed.addFields([
 				{
 					name: getResource("queue_move_new_position", firstIndex?.toString()),
-					value: firstName
+					value: secondName
 				},
 				{
 					name: getResource("queue_move_new_position", secondIndex?.toString()),
-					value: secondName
+					value: firstName
 				}
 			]);
 		}
