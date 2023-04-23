@@ -16,17 +16,19 @@ const queue: QueueItem[] = [];
 const [query, userId] = workerData;
 
 new Promise<TrackAdd>((resolve, reject) => {
-	const add = (title: string, url: string) => {
+	const add = (title: string, url: string, thumbnailUrl: string) => {
 		queue.push({
 			name: title,
 			url: url,
+			thumbnailUrl: thumbnailUrl,
 			userId: userId
 		});
 		resolve({
 			track: {
 				name: title,
 				url: url,
-				userId: userId
+				userId: userId,
+				thumbnailUrl: thumbnailUrl
 			},
 			type: TrackType.video,
 			queue: queue
@@ -44,7 +46,7 @@ new Promise<TrackAdd>((resolve, reject) => {
 					if (v?.videoId)
 						queue.push(
 							{
-								name: v?.title, url: "https://www.youtube.com/watch?v=" + v?.videoId, userId
+								name: v?.title, url: "https://www.youtube.com/watch?v=" + v?.videoId, userId, thumbnailUrl: v?.thumbnail
 							}
 						);
 				});
@@ -52,7 +54,8 @@ new Promise<TrackAdd>((resolve, reject) => {
 					track: {
 						name: data?.title,
 						url: data?.url,
-						userId: userId
+						userId: userId,
+						thumbnailUrl: data?.thumbnail
 					},
 					type: TrackType.playlist,
 					queue: queue
@@ -66,7 +69,7 @@ new Promise<TrackAdd>((resolve, reject) => {
 			if (data.videos?.length > 0) {
 				const title = data?.videos[0]?.title
 				const url = data?.videos[0]?.url;
-				add(title, url);
+				add(title, url, data?.videos[0]?.thumbnail);
 			} else reject("track_error_no_results");
 		});
 	};
@@ -75,7 +78,8 @@ new Promise<TrackAdd>((resolve, reject) => {
 			if (error) reject("track_error");
 			const title = data?.title
 			const url = data?.url;
-			add(title, url);
+			const thumbnail = data?.thumbnail;
+			add(title, url, thumbnail);
 		});
 	};
 	

@@ -63,4 +63,13 @@ export class Configuration {
 		return aloneSeconds;
 	}
 
+	static getEmbedColor() {
+		const embedColor: string = config?.hexEmbedColor;
+		if (!embedColor) {
+			log(getResource("system_missing_hex_color"), LogType.warn);
+			process.exit(1);
+		}
+		return embedColor;
+	}
+
 }

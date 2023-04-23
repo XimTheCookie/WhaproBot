@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const info = 
 {
@@ -20,17 +20,36 @@ export const info =
 		const index = interaction.options.getInteger("index");
 		if (!index || index < 1) {
 			const track = controller.nowPlaying();
-			if(track) handleReply(interaction, `${getResource("track_current", track?.name, track?.url)}\n\n${getResource("track_user", track?.userId)}`);
-			else handleReply(interaction, getResource("track_current_none"));
+			const nowPlayingEmbeds = new EmbedBuilder();
+			nowPlayingEmbeds.setAuthor({name: getResource("track_info_title_current")});
+			if (track) {
+				nowPlayingEmbeds.setTitle(track?.name);
+				nowPlayingEmbeds.setURL(track?.url);
+				nowPlayingEmbeds.setThumbnail(track?.thumbnailUrl);
+				nowPlayingEmbeds.setDescription(getResource("track_user", track?.userId));
+			}
+			else nowPlayingEmbeds.setDescription(getResource("track_current_none"));
+			
+			handleReplyEmbed(interaction, nowPlayingEmbeds);
 			return;
 		}
+		
 		if (index > controller.getQueue().length) {
 			handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"), true);
 			return;
 		}
+
 		const track = controller.getQueue()[index - 1];
+		const infoEmbeds = new EmbedBuilder();
+		infoEmbeds.setAuthor({name: getResource("track_info_title")});
 		if (track) {
-			handleReply(interaction, `${getResource("queue_info", track?.name, track?.url, index.toString())}\n\n${getResource("track_user", track?.userId)}`);
-		} else handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : ""));
+			infoEmbeds.setTitle(track?.name);
+			infoEmbeds.setURL(track?.url);
+			infoEmbeds.setThumbnail(track?.thumbnailUrl);
+			infoEmbeds.setDescription(getResource("track_user", track?.userId));
+		}
+		else infoEmbeds.setDescription(getResource("queue_info_no_index"));
+
+		handleReplyEmbed(interaction, infoEmbeds);
 	}
 }

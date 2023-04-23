@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const shuffle = 
 {
@@ -18,6 +18,6 @@ export const shuffle =
 		}
 		
 		controller.shuffle();
-		handleReply(interaction, getResource("queue_shuffle"));
+		handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("queue_shuffle")));
 	}
 }

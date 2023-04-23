@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const remove = 
 {
@@ -23,7 +23,7 @@ export const remove =
 		}
 		const index = interaction.options.getInteger("index");
 		const removedTrack = index ? controller.remove(index - 1) : undefined;
-		if (removedTrack) handleReply(interaction, getResource("track_removed", removedTrack));
+		if (removedTrack) handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("track_removed", removedTrack?.name)).setURL(removedTrack?.url).setThumbnail(removedTrack?.thumbnailUrl));
 		else handleReply(interaction, getResource("track_not_removed", index?.toString()));
 	}
 }

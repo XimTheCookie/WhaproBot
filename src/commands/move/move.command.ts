@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const move = 
 {
@@ -40,13 +40,38 @@ export const move =
 			handleReply(interaction, getResource("queue_move_no_index", secondIndex.toString()), true);
 			return;
 		}
-		if (firstIndex === secondIndex) {
-			handleReply(interaction, getResource("queue_move_itself"), true);
-			return;
-		}
+		const moveEmbed = new EmbedBuilder();
+		moveEmbed.setAuthor({name: getResource("queue_move_title")});
 		const firstName = controller.getQueue()[firstIndex - 1]?.name;
-		const secondName = controller.getQueue()[secondIndex - 1]?.name;
-		controller.switch(firstIndex - 1, secondIndex - 1);
-		handleReply(interaction, getResource("queue_move", firstName, secondName));
+		if (firstIndex === secondIndex) {
+			moveEmbed.setTitle(getResource("queue_move_itself"));
+			moveEmbed.addFields([
+				{
+					name: getResource("queue_move_new_position", firstIndex?.toString()),
+					value: firstName
+				},
+				{
+					name: getResource("queue_move_new_position", secondIndex?.toString()),
+					value: firstName
+				}
+			]);
+		} else {
+			const secondName = controller.getQueue()[secondIndex - 1]?.name;
+			controller.switch(firstIndex - 1, secondIndex - 1);
+			moveEmbed.setTitle(getResource("queue_move"));
+			moveEmbed.addFields([
+				{
+					name: getResource("queue_move_new_position", firstIndex?.toString()),
+					value: firstName
+				},
+				{
+					name: getResource("queue_move_new_position", secondIndex?.toString()),
+					value: secondName
+				}
+			]);
+		}
+		
+		handleReplyEmbed(interaction, moveEmbed);
+		
 	}
 }

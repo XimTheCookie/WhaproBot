@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const stop = 
 {
@@ -25,6 +25,6 @@ export const stop =
 		} 
 		
 		controller.deleteConnection();
-		handleReply(interaction, getResource("bot_leave"));
+		handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("bot_leave")));
 	}
 }

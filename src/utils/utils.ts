@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, GuildMember, PermissionResolvable } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, PermissionResolvable } from "discord.js";
 import { Configuration } from "../configuration";
 import { LogType } from "../models/enums/LogType.enum";
 import lang from "../resources/lang/lang.json";
@@ -71,10 +71,29 @@ export async function handleReply(interaction: ChatInputCommandInteraction, mess
 		.catch((e) => log(e, LogType.error));
 }
 
-export async function handleEditReply(interaction: ChatInputCommandInteraction, message: string, ephemeral: boolean = false) {
+export async function handleEditReply(interaction: ChatInputCommandInteraction, message: string) {
 	return interaction
 		.editReply({
 			content: message
+		})
+		.catch((e) => log(e, LogType.error));
+}
+
+export async function handleReplyEmbed(interaction: ChatInputCommandInteraction, embed: EmbedBuilder, ephemeral: boolean = false) {
+	embed.setColor(parseInt(Configuration.getEmbedColor(), 16));
+	return interaction
+		.reply({
+			embeds: [embed],
+			ephemeral
+		})
+		.catch((e) => log(e, LogType.error));
+}
+
+export async function handleEditReplyEmbed(interaction: ChatInputCommandInteraction, embed: EmbedBuilder) {
+	embed.setColor(parseInt(Configuration.getEmbedColor(), 16));
+	return interaction
+		.editReply({
+			embeds: [embed]
 		})
 		.catch((e) => log(e, LogType.error));
 }

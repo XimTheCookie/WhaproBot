@@ -1,7 +1,7 @@
 import { AudioPlayerStatus } from "@discordjs/voice";
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const pause = 
 {
@@ -22,7 +22,6 @@ export const pause =
 			return;
 		}
 		controller.pausePlayer();
-		handleReply(interaction, getResource("player_pause"));
-		return;
+		handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("player_pause")));
 	}
 }

@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleEditReplyEmbed, handleReply } from "../../utils/utils";
 
 export const loop = 
 {
@@ -16,7 +16,10 @@ export const loop =
 			handleReply(interaction, getResource("user_not_same_voice"), true);
 			return;
 		}
-		if (controller.loop()) handleReply(interaction, getResource("queue_loop_e"));
-		else handleReply(interaction, getResource("queue_loop_d"));
+		const loopEmbed = new EmbedBuilder();
+		loopEmbed.setAuthor({name: getResource("queue_loop_title")})
+		if (controller.loop()) loopEmbed.setTitle(getResource("queue_loop_e"));
+		else loopEmbed.setTitle(getResource("queue_loop_d"));
+		handleEditReplyEmbed(interaction, loopEmbed);
 	}
 }

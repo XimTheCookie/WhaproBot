@@ -1,7 +1,7 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { TrackType } from "../../models/enums/TrackType.enum";
 import { MusicController } from "../../music.controller";
-import { getResource, handleEditReply, handleReply } from "../../utils/utils";
+import { getResource, handleEditReply, handleEditReplyEmbed, handleReply } from "../../utils/utils";
 
 export const play = 
 {
@@ -33,7 +33,6 @@ export const play =
 			
 		}
 		
-
 		const currentChannelId = controller.getConnection(guild, voice.id)?.joinConfig?.channelId;
 
 		if (currentChannelId !== voice.id) {
@@ -43,14 +42,23 @@ export const play =
 
 		const query = interaction.options.getString("query");
 		const next = interaction.options.getBoolean("next");
-
+		const userName: string = interaction.user.username;
 		if (query) {
 			handleReply(interaction, getResource("track_add_w", query));
 			controller.addMusic(query, interaction.user.id, !!next).then((result) => {
-				if (result?.type === TrackType.playlist)
-					handleEditReply(interaction, getResource("track_add_playlist", `${result.track.name} ${getResource("track_add_playlist_n", result?.queue?.length?.toString())}`))
-				else
-					handleEditReply(interaction, getResource("track_add", result?.track?.name, result?.track?.url));
+				const videoEmbed = new EmbedBuilder();
+				if (result?.type === TrackType.playlist) {
+					videoEmbed.setAuthor({name: getResource("track_add_playlist")});
+					videoEmbed.addFields({name: getResource("track_add_playlist_n"), value: result?.queue?.length?.toString()})
+				}
+				else {
+					videoEmbed.setAuthor({name: getResource("track_add")});
+				}
+				videoEmbed.setTitle(result.track.name);
+				videoEmbed.setURL(result.track.url);
+				videoEmbed.setFooter({text: getResource("track_user_name", userName)})
+				videoEmbed.setThumbnail(result.track.thumbnailUrl);
+				handleEditReplyEmbed(interaction, videoEmbed);
 			}).catch((e) => {
 				handleEditReply(interaction, getResource(e));
 			})

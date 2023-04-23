@@ -18,8 +18,8 @@ export class QueueController {
 		return this.np;
 	}
 
-	add(name: string, url: string, userId: string) {
-		this.items.push({ name, url, userId });
+	add(name: string, url: string, userId: string, thumbnailUrl: string) {
+		this.items.push({ name, url, userId, thumbnailUrl });
 	}
 
 	remove(index: number): QueueItem | null {

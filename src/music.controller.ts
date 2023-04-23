@@ -248,7 +248,7 @@ export class MusicController {
 
 	remove(index: number) {
 		const item = this.queue.remove(index);
-		if (item) return item.name;
+		if (item) return item;
 		return "";
 	}
 

@@ -4,6 +4,7 @@
 	"serverSettingsPath": "src/resources/settings/", //"src/resources/settings/"
 	"queueListItems": 15, // How many items to display in a queue page
 	"useLog": true, // Show/Hide logs
-	"inactivitySeconds": 0, // Seconds of inactivity before bot auto leaves voice channel, 0 is infinite
+	"inactivitySeconds": 30, // Seconds of inactivity before bot auto leaves voice channel, 0 is infinite
 	"aloneSeconds": 120, // Seconds of time spent alone by bot playing in a channel, 0 is infinite
+	"hexEmbedColor": "00FF00", // Hex color for embeds
 }

@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const clear = 
 {
@@ -42,6 +42,10 @@ export const clear =
 		
 		const length = controller.getQueue().length;
 		controller.clear(removeUid);
-		handleReply(interaction, getResource("queue_clear", length.toString()));
+		const clearEmbed = new EmbedBuilder();
+		clearEmbed.setAuthor({name: getResource(removeUid ? "queue_clear_title_user" : "queue_clear_title")});
+		clearEmbed.setTitle(getResource("queue_clear"));
+		clearEmbed.setFields([{name: getResource("queue_clear_num"), value: length.toString()}])
+		handleReplyEmbed(interaction, clearEmbed)
 	}
 }

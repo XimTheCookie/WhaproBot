@@ -1,8 +1,8 @@
 
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { Configuration } from "../../configuration";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 const itemsPerPage: number = Configuration.getItemsPerQueuePage() ?? 15;
 
@@ -25,16 +25,17 @@ export const queue =
 		const inputPage: number = input < 1 ? 1 : input;
 		const queue = controller.getQueue();
 		const track = controller.nowPlaying();
-		let print: string = `${getResource("queue_title", guild.name)}\n\n`;
+
+		const queueEmbed = new EmbedBuilder();
+
+		// let print: string = `${getResource("queue_title", guild.name)}\n\n`;
+		queueEmbed.setAuthor({name: getResource("queue_title", guild.name)});
 		if (track) {
-			print = print + `${getResource("track_current_short", track.name)}\n\n`;
+			queueEmbed.setTitle(getResource("track_current_short", track.name));
+			queueEmbed.setURL(track.url);
 		}
 		
 		if (queue.length > 0) {
-			print = print + `${getResource("queue_list")}\n`;
-			print = print + "```json\n";
-			
-			//const pages: number = Math.floor(queue?.length / itemsPerPage);
 			const maxPages: number = Math.ceil(queue?.length / itemsPerPage);
 
 			const requiredPage: number = inputPage >= maxPages ? maxPages : inputPage < 1 ? 1 : inputPage;
@@ -43,19 +44,20 @@ export const queue =
 			const endIndex = itemsPerPage * requiredPage > queue.length ? queue.length : itemsPerPage * requiredPage;
 			
 			const pageItems = queue.slice(startIndex, endIndex);
-			
-			
-			pageItems.forEach((t, i) => {
-				print = print + `${getResource("queue_list_item", (i + startIndex + 1).toString(), t?.name)}\n`;
-			});
-			print = print + `\n${getResource("queue_page", requiredPage.toString(), maxPages.toString())}`;
-			print = print + "\n```";
-		} else print = print + `${getResource("queue_none")}\n`;
-		
-		if (controller.loopStatus()) {
-			print = print + `\n${getResource("queue_loop_on")}`;
-		}
 
-		await handleReply(interaction, print);
+			const fieldValues: any[] = [{name: getResource("queue_list"), value: " "}];
+			
+			
+			pageItems.forEach((t, i) => 
+				fieldValues.push({
+					name: getResource("queue_list_item", (i + startIndex + 1).toString(), t?.name),
+					value: t?.url
+				}));
+			queueEmbed.setFields(fieldValues);
+			queueEmbed.setFooter({text: getResource("queue_page", requiredPage.toString(), maxPages.toString())});
+		} else queueEmbed.setFields({name: getResource("queue_none"), value: " " })
+		if (controller.loopStatus()) queueEmbed.setDescription(getResource("queue_loop_on"));
+	
+		handleReplyEmbed(interaction, queueEmbed);
 	}
 }

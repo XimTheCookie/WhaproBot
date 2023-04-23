@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const join = 
 {
@@ -33,6 +33,6 @@ export const join =
 		}
 		
 		controller.newConnection(guild, voice.id);
-		handleReply(interaction, getResource("bot_join", voice.id));
+		handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("bot_join", voice.id)));
 	}
 }
