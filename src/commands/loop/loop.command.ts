@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleEditReplyEmbed, handleReply } from "../../utils/utils";
+import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
 
 export const loop = 
 {
@@ -20,6 +20,6 @@ export const loop =
 		loopEmbed.setAuthor({name: getResource("queue_loop_title")})
 		if (controller.loop()) loopEmbed.setTitle(getResource("queue_loop_e"));
 		else loopEmbed.setTitle(getResource("queue_loop_d"));
-		handleEditReplyEmbed(interaction, loopEmbed);
+		handleReplyEmbed(interaction, loopEmbed);
 	}
 }
