@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed } from "../../utils/utils";
 
 export const info = 
 {
@@ -14,7 +14,7 @@ export const info =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"), true);
+			handleEmbedError(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		const index = interaction.options.getInteger("index");
@@ -35,7 +35,7 @@ export const info =
 		}
 		
 		if (index > controller.getQueue().length) {
-			handleReply(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"), true);
+			handleEmbedError(interaction, getResource("queue_info_no_index", index ? index.toString() : "0"));
 			return;
 		}
 

@@ -1,8 +1,9 @@
 
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { Configuration } from "../../configuration";
+import { LoopMode } from "../../models/enums/LoopMode.enum";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed } from "../../utils/utils";
 
 const itemsPerPage: number = Configuration.getItemsPerQueuePage() ?? 15;
 
@@ -18,7 +19,7 @@ export const queue =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"), true);
+			handleEmbedError(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		const input: number = interaction.options.getInteger("page") ?? 1;
@@ -56,7 +57,7 @@ export const queue =
 			queueEmbed.setFields(fieldValues);
 			queueEmbed.setFooter({text: getResource("queue_page", requiredPage.toString(), maxPages.toString())});
 		} else queueEmbed.setFields({name: getResource("queue_none"), value: " " })
-		if (controller.loopStatus()) queueEmbed.setDescription(getResource("queue_loop_on"));
+		if (controller.loopStatus() !== LoopMode.off) queueEmbed.setDescription(getResource("queue_loop" + controller.loopStatus()));
 	
 		handleReplyEmbed(interaction, queueEmbed);
 	}

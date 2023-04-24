@@ -98,6 +98,13 @@ export async function handleEditReplyEmbed(interaction: ChatInputCommandInteract
 		.catch((e) => log(e, LogType.error));
 }
 
+export async function handleEmbedError(interaction: ChatInputCommandInteraction, message: string, ephemeral: boolean = true, isReply: boolean = false) {
+	const embed = new EmbedBuilder()
+	.setTitle(message);
+	if (isReply) return handleEditReplyEmbed(interaction, embed);
+	else return handleReplyEmbed(interaction, embed, ephemeral)
+}
+
 export function log(content: string, type: LogType = LogType.info) {
 	if (!Configuration.useLog()) return;
 	const message = getResource("system_log", getResource("system_log_type_" + type), new Date().toString(), content);

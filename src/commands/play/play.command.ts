@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { TrackType } from "../../models/enums/TrackType.enum";
 import { MusicController } from "../../music.controller";
-import { getResource, handleEditReply, handleEditReplyEmbed, handleReply } from "../../utils/utils";
+import { getResource, handleEditReplyEmbed, handleEmbedError, handleReply } from "../../utils/utils";
 
 export const play = 
 {
@@ -21,22 +21,19 @@ export const play =
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		
 		if (!voice) {
-			handleReply(interaction, getResource("user_not_voice"), true);
+			handleEmbedError(interaction, getResource("user_not_voice"));
 			return;
 		}
 
-		if (!voice.joinable) {
-			if (controller.getConnection()?.joinConfig?.channelId !== voice.id) {
-				handleReply(interaction, getResource("bot_cannot_join"), true);
-				return;
-			}
-			
+		if (!voice.joinable && controller.getConnection()?.joinConfig?.channelId !== voice.id) {
+			handleEmbedError(interaction, getResource("bot_cannot_join"));
+			return;
 		}
 		
 		const currentChannelId = controller.getConnection(guild, voice.id)?.joinConfig?.channelId;
 
 		if (currentChannelId !== voice.id) {
-			handleReply(interaction, getResource("user_not_same_voice"), true);
+			handleEmbedError(interaction, getResource("user_not_same_voice"));
 			return;
 		}
 
@@ -60,9 +57,9 @@ export const play =
 				videoEmbed.setThumbnail(result.track.thumbnailUrl);
 				handleEditReplyEmbed(interaction, videoEmbed);
 			}).catch((e) => {
-				handleEditReply(interaction, getResource(e));
+				handleEmbedError(interaction, getResource(e), false, true);
 			})
 			return;
-		} else	handleReply(interaction, getResource("track_no_query"), true);
+		} else	handleEmbedError(interaction, getResource("track_no_query"));
 	}
 }

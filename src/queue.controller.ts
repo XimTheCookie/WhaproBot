@@ -1,14 +1,16 @@
 import { QueueItem } from "./models/QueueItem.model";
+import { LoopMode } from "./models/enums/LoopMode.enum";
 import { ArrayMove, ArrayRemove, ArrayShuffle } from "./utils/utils";
 
 export class QueueController {
 	private items: QueueItem[] = [];
 	private np: QueueItem | undefined = undefined;
 	private onPush: QueueItem | undefined = undefined;
-	private loop: boolean = false;
+	private mode: LoopMode = LoopMode.off;
 
 	next(): QueueItem | undefined {
-		if (this.onPush && this.loop) this.items.push(this.onPush);
+		if (this.mode === LoopMode.single && this.np) return this.np;
+		if (this.onPush && this.mode !== LoopMode.off) this.items.push(this.onPush);
 		this.np = this.items.shift();
 		this.onPush = this.np;
 		return this.np;
@@ -36,13 +38,12 @@ export class QueueController {
 		this.items = ArrayMove(this.items, oldIndex, newIndex);
 	}
 
-	switchLoop() {
-		this.loop = !this.loop;
-		return this.loop;
+	setLoop(mode: LoopMode) {
+		this.mode = mode;
 	}
 
 	getLoop() {
-		return this.loop;
+		return this.mode;
 	}
 
 	clear(uid?: string) {

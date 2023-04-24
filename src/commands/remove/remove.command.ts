@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed } from "../../utils/utils";
 
 export const remove = 
 {
@@ -14,16 +14,23 @@ export const remove =
 			),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"));
+			handleEmbedError(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		if (!voice || voice?.id !== controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("user_not_same_voice"));
+			handleEmbedError(interaction, getResource("user_not_same_voice"));
 			return;
 		}
 		const index = interaction.options.getInteger("index");
 		const removedTrack = index ? controller.remove(index - 1) : undefined;
-		if (removedTrack) handleReplyEmbed(interaction, new EmbedBuilder().setTitle(getResource("track_removed", removedTrack?.name)).setURL(removedTrack?.url).setThumbnail(removedTrack?.thumbnailUrl));
-		else handleReply(interaction, getResource("track_not_removed", index?.toString()));
+		
+		if (removedTrack) handleReplyEmbed(interaction, 
+			new EmbedBuilder()
+				.setAuthor({name: getResource("track_removed")})
+				.setTitle(removedTrack?.name)
+				.setURL(removedTrack?.url)
+				.setThumbnail(removedTrack?.thumbnailUrl)
+			);
+		else handleEmbedError(interaction, getResource("track_not_removed", index?.toString()));
 	}
 }

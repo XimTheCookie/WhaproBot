@@ -4,6 +4,7 @@ import { Worker } from "worker_threads";
 import ytdl from "ytdl-core";
 import { Configuration } from "./configuration";
 import { TrackAdd } from "./models/TrackAdd.model";
+import { LoopMode } from "./models/enums/LoopMode.enum";
 import { QueueController } from "./queue.controller";
 import { SettingsService } from "./settings.service";
 import { getResource, hasRole, hasSetDJPerm, log } from "./utils/utils";
@@ -230,8 +231,8 @@ export class MusicController {
 		this.queue.shuffle();
 	}
 
-	loop() {
-		return this.queue.switchLoop();
+	loop(newMode: LoopMode) {
+		return this.queue.setLoop(newMode);
 	}
 
 	loopStatus() {

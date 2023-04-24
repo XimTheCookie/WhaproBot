@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed } from "../../utils/utils";
 
 export const join = 
 {
@@ -9,15 +9,15 @@ export const join =
 		.setDescription(getResource("command_join_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!voice) {
-			handleReply(interaction, getResource("user_not_voice"), true);
+			handleEmbedError(interaction, getResource("user_not_voice"));
 			return;
 		}
 		if (controller.getConnection()?.joinConfig?.channelId === voice?.id) {
-			handleReply(interaction, getResource("user_same_voice"), true);
+			handleEmbedError(interaction, getResource("user_same_voice"));
 			return;
 		}
 		if (!voice?.joinable) {
-			handleReply(interaction, getResource("bot_cannot_join"), true);
+			handleEmbedError(interaction, getResource("bot_cannot_join"));
 			return;
 		}
 
@@ -27,7 +27,7 @@ export const join =
 			const usersInOldVoice = (guild.channels.cache.get(botChannelId) as VoiceBasedChannel)?.members?.size;
 			const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 			if (usersInOldVoice && usersInOldVoice > 1 && !controller.canUseDJCommands(member)) {
-				handleReply(interaction, getResource("user_not_perm"), true);
+				handleEmbedError(interaction, getResource("user_not_perm"));
 				return;
 			}
 		}

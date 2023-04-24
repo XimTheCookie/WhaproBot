@@ -4,7 +4,7 @@ import { commands } from "./commands/commands";
 import { about } from "./commands/about/about.command";
 import { help } from "./commands/help/help.command";
 import { Configuration } from "./configuration";
-import { getResource, handleReply, log } from "./utils/utils";
+import { getResource, handleEmbedError, log } from "./utils/utils";
 import { WhaproClass } from "./whapro";
 
 const whapro = new WhaproClass();
@@ -31,7 +31,7 @@ client.on("interactionCreate", (interaction) => {
 		return;
 	} 
 	if (!interaction?.guild) {
-		handleReply(interaction, getResource("user_not_server"));
+		handleEmbedError(interaction, getResource("user_not_server"));
 		return;
 	}
 	const guild = interaction.guild;

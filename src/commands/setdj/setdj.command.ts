@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed, hasSetDJPerm } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed, hasSetDJPerm } from "../../utils/utils";
 
 export const setdj = 
 {
@@ -17,7 +17,7 @@ export const setdj =
 		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 		const hasPerms = hasSetDJPerm(member);
 		if (!hasPerms) {
-			handleReply(interaction, getResource("user_not_perm"), true);
+			handleEmbedError(interaction, getResource("user_not_perm"));
 			return;
 		} 
 		const roleId: string = interaction.options.getRole("role")?.id ?? "";

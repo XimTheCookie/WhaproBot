@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, VoiceBasedChannel } from "discord.js";
 import { MusicController } from "../../music.controller";
-import { getResource, handleReply, handleReplyEmbed } from "../../utils/utils";
+import { getResource, handleEmbedError, handleReplyEmbed } from "../../utils/utils";
 
 export const stop = 
 {
@@ -9,18 +9,18 @@ export const stop =
 		.setDescription(getResource("command_stop_dsc")),
 	async execute(interaction: ChatInputCommandInteraction, controller: MusicController, guild: Guild, voice: VoiceBasedChannel | null) {
 		if (!controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("bot_not_voice"), true);
+			handleEmbedError(interaction, getResource("bot_not_voice"));
 			return;
 		}
 		if (!voice || voice?.id !== controller.getConnection()?.joinConfig?.channelId) {
-			handleReply(interaction, getResource("user_not_same_voice"), true);
+			handleEmbedError(interaction, getResource("user_not_same_voice"));
 			return;
 		}
 
 		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 
 		if (voice.members.size > 3 && !controller.canUseDJCommands(member)) {
-			handleReply(interaction, getResource("user_not_perm"), true);
+			handleEmbedError(interaction, getResource("user_not_perm"));
 			return;
 		} 
 		
