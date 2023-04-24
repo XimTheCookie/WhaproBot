@@ -40,7 +40,6 @@ export const skip =
 		if (force) {
 			controller.nextAudioResource();
 			const track = controller.nowPlaying();
-			trackSkipEmbed.setAuthor({name: getResource("track_skip_title_force")});
 			trackSkipEmbed.setTitle(getResource("track_skip"));
 			if (track) {
 				trackSkipEmbed.setDescription(getResource("track_current_short", track.name));
@@ -56,7 +55,6 @@ export const skip =
 		const result = controller.addSkipVote(interaction.user.id, requiredVotes);
 
 		if (typeof result === "number") {
-			trackSkipEmbed.setAuthor({name: getResource("track_skip_title_vote")});
 			trackSkipEmbed.setTitle("track_skip_votes");
 			trackSkipEmbed.addFields([
 				{
@@ -73,7 +71,6 @@ export const skip =
 		} 
 
 		if (result) {
-			trackSkipEmbed.setAuthor({name: getResource("track_skip_title")});
 			const track = controller.nowPlaying();
 			trackSkipEmbed.setTitle(getResource("track_skip"));
 			if (track) {

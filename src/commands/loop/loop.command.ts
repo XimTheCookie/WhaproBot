@@ -35,7 +35,6 @@ export const loop =
 		}
 		const newMode: LoopMode = <LoopMode>(interaction.options.getString("mode") ?? LoopMode.off);
 		const loopEmbed = new EmbedBuilder();
-		loopEmbed.setAuthor({name: getResource("queue_loop_title")})
 		controller.loop(newMode);
 		loopEmbed.setTitle(getResource("queue_loop_" + newMode));
 		handleReplyEmbed(interaction, loopEmbed);
