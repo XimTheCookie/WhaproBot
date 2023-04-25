@@ -55,9 +55,9 @@ export const queue =
 					value: t?.url
 				}));
 			queueEmbed.setFields(fieldValues);
-			queueEmbed.setFooter({text: getResource("queue_page", requiredPage.toString(), maxPages.toString())});
+			queueEmbed.setFooter({text: getResource("queue_page", requiredPage.toString(), maxPages.toString(), queue?.length?.toString() )});
 		} else queueEmbed.setFields({name: getResource("queue_none"), value: " " })
-		if (controller.loopStatus() !== LoopMode.off) queueEmbed.setDescription(getResource("queue_loop" + controller.loopStatus()));
+		if (controller.loopStatus() !== LoopMode.off) queueEmbed.setDescription(getResource("queue_loop_" + controller.loopStatus()));
 	
 		handleReplyEmbed(interaction, queueEmbed);
 	}

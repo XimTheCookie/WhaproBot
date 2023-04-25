@@ -46,7 +46,7 @@ export class QueueController {
 		return this.mode;
 	}
 
-	clear(uid?: string) {
+	clear(inDepth: boolean, uid?: string) {
 		if (uid) {
 			this.items = this.items.filter(i => i.userId !== uid);
 			if (this.onPush?.userId === uid) this.onPush = undefined;
@@ -54,7 +54,7 @@ export class QueueController {
 			this.items = [];
 			this.onPush = undefined;
 		}
-		
+		if (inDepth) this.np = undefined;
 	}
 
 	getQueue() {

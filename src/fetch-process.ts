@@ -46,7 +46,10 @@ new Promise<TrackAdd>((resolve, reject) => {
 					if (v?.videoId)
 						queue.push(
 							{
-								name: v?.title, url: "https://www.youtube.com/watch?v=" + v?.videoId, userId, thumbnailUrl: v?.thumbnail
+								name: v?.title,
+								url: "https://www.youtube.com/watch?v=" + v?.videoId,
+								userId, 
+								thumbnailUrl: v?.thumbnail
 							}
 						);
 				});

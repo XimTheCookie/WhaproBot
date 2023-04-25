@@ -149,7 +149,7 @@ export class MusicController {
 	}
 
 	deleteConnection() {
-		this.clear();
+		this.clear(true);
 		const connection = this.connection;
 		if(connection && connection.state.status !== VoiceConnectionStatus.Destroyed) {
 			connection.removeAllListeners("staterChange");
@@ -243,8 +243,8 @@ export class MusicController {
 		return this.queue.nowPlaying();
 	}
 
-	clear(uid?: string) {
-		this.queue.clear(uid);
+	clear(inDepth: boolean, uid?: string) {
+		this.queue.clear(inDepth, uid);
 	}
 
 	remove(index: number) {
