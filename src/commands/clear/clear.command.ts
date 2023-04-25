@@ -41,7 +41,7 @@ export const clear =
 
 		
 		const length = controller.getQueue().length;
-		controller.clear(removeUid);
+		controller.clear(false, removeUid);
 		const clearEmbed = new EmbedBuilder();
 		clearEmbed.setAuthor({name: getResource(removeUid ? "queue_clear_title_user" : "queue_clear_title")});
 		clearEmbed.setTitle(getResource("queue_clear"));
