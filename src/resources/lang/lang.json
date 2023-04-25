@@ -26,7 +26,7 @@
 	"track_error_no_results": "❌ Nothing found.",
 	"track_error_no_track": "❌ No track/playlist found in provided url.",
 
-	"queue_title": "Queue for server ``{arg0}``:",
+	"queue_title": "Queue for server {arg0}:",
 	"queue_list": "Following tracks:",
 	"queue_list_item": "{arg0} - {arg1}",
 	"queue_loop_QUEUE": "🔁 Queue is looped.",
