@@ -45,11 +45,11 @@ export const play =
 			controller.addMusic(query, interaction.user.id, !!next).then((result) => {
 				const videoEmbed = new EmbedBuilder();
 				if (result?.type === TrackType.playlist) {
-					videoEmbed.setAuthor({name: getResource("track_add_playlist")});
+					videoEmbed.setAuthor({name: getResource(!!next ? "track_add_playlist_next" :"track_add_playlist")});
 					videoEmbed.addFields({name: getResource("track_add_playlist_n"), value: result?.queue?.length?.toString()})
 				}
 				else {
-					videoEmbed.setAuthor({name: getResource("track_add")});
+					videoEmbed.setAuthor({name: getResource(!!next ? "track_add_next" : "track_add")});
 				}
 				videoEmbed.setTitle(result.track.name);
 				videoEmbed.setURL(result.track.url);
