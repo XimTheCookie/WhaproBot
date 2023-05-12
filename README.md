@@ -1,7 +1,3 @@
 # WhaproBot
-My small attempt at making a Discord Music Bot in Node. I'm novice and the software is still in development.
-
-# TODO
-Major DJ Role permissions
-lyrics command
-merge info and np commands
+My small attempt at making a Discord Music Bot in Node.
+Will get occasionally updated for new features and/or bugfixes, expecially since i use this myself.
