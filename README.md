@@ -12,6 +12,7 @@ Locally:
 5. Open the project folder in terminal and run "npm run build" to compile the project.
 6. (Only once) run "npm run deploy-commands" to register bot's slash commands to Discord.
 7. run "npm run start" to start bot.
+
 Docker:
 TBD
 
