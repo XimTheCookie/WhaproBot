@@ -4,7 +4,7 @@ Will get occasionally updated for new features and/or bugfixes, expecially since
 Unfortunately it looks like it is not possible to make a Discord.JS bot to work with multi threading, planning this for a possible bot rewrite in another language in future.
 
 # How to run
-1. Install Node.JS (Bot was made using version 16.), you are free to us NVM.
+1. Install Node.JS (Bot was made using version 16.), you are free to us NVM. (ffmpeg is also required to run this code).
 2. Create your Discord Bot on https://discord.com/developers/applications (and invite it to your Discord server).
 3. Download WhaproBot and extract the archive wherever you want.
 4. Edit file src/configuration.json, you must add bot token and bot user id, otherwise it will not work.
