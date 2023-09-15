@@ -17,3 +17,5 @@ What i plan for the future of this bot:
 1. BugFixes every time a bug is found.
 2. Add a user playlist system for user to save their own playlist.
 3. Allow the custom deployment of commands to disable/enable commands.
+4. Possibility to use a remote location for servers dj role configuration file.
+5. Create a Docker image of the bot.
