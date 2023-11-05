@@ -21,6 +21,7 @@ yarn-error.log
 /src/configuration.json
 configuration.json
 src/configuration.json
+env.list
 
 # Server Settings
 /src/resources/settings/*.json
