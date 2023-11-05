@@ -8,7 +8,7 @@
     "start": "node output/index.js",
     "deploy-commands": "node output/commands.deploy.js",
     "docker-build": "docker build -t whaprobot:1.0.1 .",
-    "docker-run": "docker run --env-file env.list whaprobot:1.0.1 "
+    "docker-run": "docker run --env-file env.list whaprobot:1.0.1"
   },
   "repository": {
     "type": "git",

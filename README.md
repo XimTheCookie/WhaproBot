@@ -5,12 +5,12 @@ Unfortunately it looks like it is not possible to make a Discord.JS bot to work 
 
 # How to run
 Locally:
-1. Install Docker.
+1. Install Docker (https://www.docker.com).
 2. Create your Discord Bot on https://discord.com/developers/applications (and invite it to your Discord server).
 3. Download WhaproBot and extract the archive wherever you want.
-4. Open the project folder in terminal and run "npm run docker-build" to compile the project.
+4. Open the project folder in terminal and run "docker build -t <image_name>:<tag> <path_to_Dockerfile_._for_cd>" to build the docker container image.
 5. Edit file env.list, you must add bot token and bot user id, otherwise it will not work.
-6. run "npm docker-run" to start bot.
+6. Run "docker run --env-file env.list <image_name>:<tag>" to start bot.
 
 # Configuration
 Edit file "env.list" to add your configuration.
