@@ -23,7 +23,7 @@ export const remove =
 		}
 		const index = interaction.options.getInteger("index");
 
-		const trackToRemove = controller.getQueue()[index - 1];
+		const trackToRemove = index ? controller.getQueue()[index - 1] : undefined;
 
 		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 
