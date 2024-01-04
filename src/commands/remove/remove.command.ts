@@ -28,11 +28,11 @@ export const remove =
 		const member = guild.members.cache.find((u) => u?.id === interaction.user.id)!;
 
 		if (trackToRemove) {
-			const removedTrack = index ? controller.remove(index - 1) : undefined;
 			if (trackToRemove?.userId != member.id && !controller.canUseDJCommands(member)) {
 				handleEmbedError(interaction, getResource("user_not_perm"));
 				return;
 			}
+			const removedTrack = index ? controller.remove(index - 1) : undefined;
 			if (removedTrack)
 				handleReplyEmbed(interaction, 
 					new EmbedBuilder()
