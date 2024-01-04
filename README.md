@@ -48,7 +48,7 @@ resume - Resumes the player.
 
 *join - Move bot to your VC (mantains queue).
 
-remove - Remove a track from queue (using an index).
+*remove - Remove a track from queue (using an index). (Only works on own requested tracks or on other user's tracks with Admin or DJ permissions).
 
 queue - Displays the current queue. Page option is available to display other pages (when multiple are available).
 
