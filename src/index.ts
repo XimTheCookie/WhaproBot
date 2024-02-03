@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, GuildMember, VoiceState } from "discord.js";
 import { commands } from "./commands/commands";
 
+import { shutdown } from "./shutdown/shutdown.command.js";
 import { about } from "./commands/about/about.command";
 import { help } from "./commands/help/help.command";
 import { Configuration } from "./configuration";
@@ -32,7 +33,7 @@ client.on("interactionCreate", (interaction) => {
 	} 
 	
 	if (commandName === "shutdown") {
-		about.execute(interaction);
+		shutdown.execute(interaction);
 		return;
 	} 
 
