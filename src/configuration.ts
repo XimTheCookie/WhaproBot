@@ -2,88 +2,148 @@ import { LogType } from "./models/enums/LogType.enum";
 import { getResource, log } from "./utils/utils";
 
 export class Configuration {
-	
+
+	static token: string | undefined = undefined; 
+
+	static botClientId: string | undefined = undefined;
+
+	static adminClientId: string | undefined = undefined;
+
+	static queueListItems: number = 0;
+
+	static shouldUseLog: string | undefined = undefined;
+
+	static serverSettingsPath: string | undefined = undefined;
+
+	static inactivitySeconds: number = -1;
+
+	static aloneSeconds: number = -1;
+
+	static embedColor: string | undefined = undefined;
+
 	static getToken() {
-		const token: string | undefined = process?.env?.token;
-		if (!token) {
-			log(getResource("system_missing_token"), LogType.warn);
+		return this.token ?? this.fetchToken();
+	}
+
+	static fetchToken() {
+		this.token = process?.env?.token;
+		if (!this.token) {
+			log(getResource("system_missing_token"), LogType.error);
 			process.exit(1);
 		}
-		return token;
+		return this.token;
 	}
 
 	static getClientId() {
-		const botClientId: string | undefined = process.env?.botClientId;
-		if (!botClientId) {
-			log(getResource("system_missing_clientid"), LogType.warn);
+		return this.botClientId ?? this.fetchClientId();
+	}
+
+	static fetchClientId() {
+		this.botClientId = process.env?.botClientId;
+		if (!this.botClientId) {
+			log(getResource("system_missing_clientid"), LogType.error);
 			process.exit(1);
 		}
-		return botClientId;
+		return this.botClientId;
+	}
+
+	static getAdminClientId() {
+		return this.adminClientId ?? this.fetchAdminClientId();
+	}
+
+	static fetchAdminClientId() {
+		this.adminClientId = process.env?.adminClientId;
+		if (!this.adminClientId) this.adminClientId = "none";
+		return this.adminClientId;
 	}
 
 	static getItemsPerQueuePage() {
+		return this.queueListItems ?? this.fetchItemsPerQueuePage();
+	}
+
+	static fetchItemsPerQueuePage() {
 		const queueListItems: string | undefined = process.env?.queueListItems;
 		if (!queueListItems) {
-			log(getResource("system_not_valid_ipp"), LogType.warn);
+			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
 		}
-		const qli: number = parseInt(queueListItems);
-		if (qli < 1) {
-			log(getResource("system_not_valid_ipp"), LogType.warn);
+		this.queueListItems = parseInt(queueListItems);
+		if (this.queueListItems < 1 || this.queueListItems > 32) {
+			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
 		}
-		return qli;
+		return this.queueListItems;
 	}
 
 	static useLog() {
 		const useLog: string | undefined = process.env?.useLog;
-		return useLog == 'true';
+		return (this.shouldUseLog ?? this.fetchUseLog() ) === "true";
+	}
+
+	static fetchUseLog() {
+		this.shouldUseLog = process.env?.useLog;
+		if (this.shouldUseLog !== "true") this.shouldUseLog = "false";
+		return this.shouldUseLog;
 	}
 
 	static getSettingsPath() {
-		const serverSettingsPath: string | undefined = process.env?.serverSettingsPath;
-		if (!serverSettingsPath) {
-			log(getResource("system_missing_settings_path"), LogType.warn);
-			process.exit(1);
-		}
-		return serverSettingsPath;
+		return this.serverSettingsPath ?? this.fetchSettingsPath();
+	}
+
+	static fetchSettingsPath() {
+		this.serverSettingsPath = process.env?.serverSettingsPath;
+		if (!this.serverSettingsPath || this.serverSettingsPath == "default") 
+			this.serverSettingsPath = "/media/serverSettings/";
+		return this.serverSettingsPath;
 	}
 
 	static getInactivitySeconds() {
+		return this.inactivitySeconds !== -1 ? this.inactivitySeconds : this.fetchInactivitySeconds();
+	}
+
+	static fetchInactivitySeconds () {
 		const inactivitySeconds: string | undefined = process.env?.inactivitySeconds;
 		if (!inactivitySeconds) {
-			log(getResource("system_not_valid_ipp"), LogType.warn);
+			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
 		}
-		const is: number = parseInt(inactivitySeconds);
-		if (is < 0) {
-			log(getResource("system_not_valid_is"), LogType.warn);
+		this.inactivitySeconds = parseInt(inactivitySeconds);
+		if (this.inactivitySeconds < 0) {
+			log(getResource("system_not_valid_is"), LogType.error);
 			process.exit(1);
 		}
-		return is;
+		return this.inactivitySeconds;
 	}
 
 	static getAloneSeconds() {
-		const aloneSeconds: string | undefined = process.env?.aloneSeconds;
-		if (!aloneSeconds) {
-			log(getResource("system_not_valid_ipp"), LogType.warn);
-			process.exit(1);
-		}
-		const as: number = parseInt(aloneSeconds);
-		if (as < 0) {
-			log(getResource("system_not_valid_as"), LogType.warn);
-			process.exit(1);
-		}
-		return as;
+		return this.aloneSeconds !== -1 ? this.aloneSeconds : this.fetchAloneSeconds();
 	}
 
-	static getEmbedColor() {
-		const embedColor: string | undefined = process.env?.hexEmbedColor;
-		if (!embedColor) {
-			log(getResource("system_missing_hex_color"), LogType.warn);
+	static fetchAloneSeconds() {
+		const aloneSeconds: string | undefined = process.env?.aloneSeconds;
+		if (!aloneSeconds) {
+			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
 		}
-		return embedColor;
+		this.aloneSeconds = parseInt(aloneSeconds);
+		if (this.aloneSeconds < 0) {
+			log(getResource("system_not_valid_as"), LogType.error);
+			process.exit(1);
+		}
+		return this.aloneSeconds;
+	}
+	
+	static getEmbedColor() {
+		return this.embedColor ?? this.fetchEmbedColor();
+	}
+
+	static fetchEmbedColor() {
+		this.embedColor = process.env?.hexEmbedColor;
+		if (!this.embedColor) {
+			log(getResource("system_missing_hex_color"), LogType.error);
+			process.exit(1);
+		}
+		return this.embedColor;
 	}
 
 }

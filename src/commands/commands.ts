@@ -13,6 +13,7 @@ import { setdj } from "./setdj/setdj.command";
 import { shuffle } from "./shuffle/shuffle.command.js";
 import { skip } from "./skip/skip.command.js";
 import { stop } from "./stop/stop.command.js";
+import { shutdown } from "./shutdown/shutdown.command.js";
 
 export const commands = [
 	play,
@@ -29,5 +30,6 @@ export const commands = [
 	info,
 	clear,
 	about,
-	setdj
+	setdj,
+	shutdown
 ];

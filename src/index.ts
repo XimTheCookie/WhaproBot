@@ -30,6 +30,12 @@ client.on("interactionCreate", (interaction) => {
 		about.execute(interaction);
 		return;
 	} 
+	
+	if (commandName === "shutdown") {
+		about.execute(interaction);
+		return;
+	} 
+
 	if (!interaction?.guild) {
 		handleEmbedError(interaction, getResource("user_not_server"));
 		return;

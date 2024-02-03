@@ -64,6 +64,7 @@
 	"bot_set_dj_remove": "✅ DJ Role has been removed.",
 	"bot_set_dj_none": "❌ No DJ Role is set yet.",
 	"bot_set_dj_title": "DJ Role settings",
+	"bot_shutdown_title": "Shutdown",
 
 	"user_not_voice": "❌ You must be in a voice channel to use that command.",
 	"user_not_same_voice": "❌ You must be in the same voice channel as the bot to use that command.",
@@ -118,6 +119,7 @@
 	"commands_deploy": "Updating {arg0} commands",
 	"commands_deploy_c": "Commands updated",
 	"commands_deploy_e": "Commands deploy error: {arg0}",
+	"command_shutdown": "Shutdowns the bot.",
 
 	"system_log": "{arg0} [Log {arg1}] - {arg2}.",
 	"system_log_type_info": "🛈-INFO",
