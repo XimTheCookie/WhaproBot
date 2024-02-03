@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, GuildMember, VoiceState } from "discord.js";
 import { commands } from "./commands/commands";
 
-import { shutdown } from "./shutdown/shutdown.command.js";
+import { shutdown } from "./commands/shutdown/shutdown.command";
 import { about } from "./commands/about/about.command";
 import { help } from "./commands/help/help.command";
 import { Configuration } from "./configuration";
