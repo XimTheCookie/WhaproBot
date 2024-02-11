@@ -26,6 +26,7 @@ export class Configuration {
 	}
 
 	static fetchToken() {
+		log("Loading: token", LogType.info);
 		this.token = process?.env?.token;
 		if (!this.token) {
 			log(getResource("system_missing_token"), LogType.error);
@@ -39,11 +40,14 @@ export class Configuration {
 	}
 
 	static fetchClientId() {
+		log("Loading: botClientId", LogType.info);
 		this.botClientId = process.env?.botClientId;
+		log((this.botClientId ?? " ").toString(), LogType.info);
 		if (!this.botClientId) {
 			log(getResource("system_missing_clientid"), LogType.error);
 			process.exit(1);
 		}
+		log((this.botClientId ?? " ").toString(), LogType.info);
 		return this.botClientId;
 	}
 
@@ -52,8 +56,11 @@ export class Configuration {
 	}
 
 	static fetchAdminClientId() {
+		log("Loading: adminClientId", LogType.info);
 		this.adminClientId = process.env?.adminClientId;
+		log((this.adminClientId ?? " ").toString(), LogType.info);
 		if (!this.adminClientId) this.adminClientId = "none";
+		log((this.adminClientId ?? " ").toString(), LogType.info);
 		return this.adminClientId;
 	}
 
@@ -62,7 +69,9 @@ export class Configuration {
 	}
 
 	static fetchItemsPerQueuePage() {
+		log("Loading: queueListItems", LogType.info);
 		const queueListItems: string | undefined = process.env?.queueListItems;
+		log((this.queueListItems ?? " ").toString(), LogType.info);
 		if (!queueListItems) {
 			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
@@ -72,6 +81,7 @@ export class Configuration {
 			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
 		}
+		log((this.queueListItems ?? " ").toString(), LogType.info);
 		return this.queueListItems;
 	}
 
@@ -81,8 +91,11 @@ export class Configuration {
 	}
 
 	static fetchUseLog() {
+		log("Loading: useLog", LogType.info);
 		this.shouldUseLog = process.env?.useLog;
+		log((this.shouldUseLog ?? " ").toString(), LogType.info);
 		if (this.shouldUseLog !== "true") this.shouldUseLog = "false";
+		log((this.shouldUseLog ?? " ").toString(), LogType.info);
 		return this.shouldUseLog;
 	}
 
@@ -91,9 +104,12 @@ export class Configuration {
 	}
 
 	static fetchSettingsPath() {
+		log("Loading: serverSettingsPath", LogType.info);
 		this.serverSettingsPath = process.env?.serverSettingsPath;
+		log((this.serverSettingsPath ?? " ").toString(), LogType.info);
 		if (!this.serverSettingsPath || this.serverSettingsPath == "default") 
 			this.serverSettingsPath = "/media/serverSettings/";
+		log((this.serverSettingsPath ?? " ").toString(), LogType.info);
 		return this.serverSettingsPath;
 	}
 
@@ -102,7 +118,9 @@ export class Configuration {
 	}
 
 	static fetchInactivitySeconds () {
+		log("Loading: inactivitySeconds", LogType.info);
 		const inactivitySeconds: string | undefined = process.env?.inactivitySeconds;
+		log((this.inactivitySeconds ?? " ").toString(), LogType.info);
 		if (!inactivitySeconds) {
 			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
@@ -112,6 +130,7 @@ export class Configuration {
 			log(getResource("system_not_valid_is"), LogType.error);
 			process.exit(1);
 		}
+		log((this.inactivitySeconds ?? " ").toString(), LogType.info);
 		return this.inactivitySeconds;
 	}
 
@@ -120,7 +139,9 @@ export class Configuration {
 	}
 
 	static fetchAloneSeconds() {
+		log("Loading: aloneSeconds", LogType.info);
 		const aloneSeconds: string | undefined = process.env?.aloneSeconds;
+		log((this.aloneSeconds ?? " ").toString(), LogType.info);
 		if (!aloneSeconds) {
 			log(getResource("system_not_valid_ipp"), LogType.error);
 			process.exit(1);
@@ -130,6 +151,7 @@ export class Configuration {
 			log(getResource("system_not_valid_as"), LogType.error);
 			process.exit(1);
 		}
+		log((this.aloneSeconds ?? " ").toString(), LogType.info);
 		return this.aloneSeconds;
 	}
 	
@@ -138,11 +160,14 @@ export class Configuration {
 	}
 
 	static fetchEmbedColor() {
+		log("Loading: hexEmbedColor", LogType.info);
 		this.embedColor = process.env?.hexEmbedColor;
+		log((this.embedColor ?? " ").toString(), LogType.info);
 		if (!this.embedColor) {
 			log(getResource("system_missing_hex_color"), LogType.error);
 			process.exit(1);
 		}
+		log((this.embedColor ?? " ").toString(), LogType.info);
 		return this.embedColor;
 	}
 
