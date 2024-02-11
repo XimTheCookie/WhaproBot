@@ -91,11 +91,9 @@ export class Configuration {
 	}
 
 	static fetchUseLog() {
-		log("Loading: useLog", LogType.info);
 		this.shouldUseLog = process.env?.useLog;
-		log((this.shouldUseLog ?? " ").toString(), LogType.info);
 		if (this.shouldUseLog !== "true") this.shouldUseLog = "false";
-		log((this.shouldUseLog ?? " ").toString(), LogType.info);
+		console.log(this.shouldUseLog);
 		return this.shouldUseLog;
 	}
 
