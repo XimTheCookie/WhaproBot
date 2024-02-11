@@ -58,7 +58,7 @@ export class Configuration {
 	}
 
 	static getItemsPerQueuePage() {
-		return this.queueListItems ?? this.fetchItemsPerQueuePage();
+		return this.queueListItems === 0 ? this.fetchItemsPerQueuePage() : this.queueListItems;
 	}
 
 	static fetchItemsPerQueuePage() {
